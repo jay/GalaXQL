@@ -1,0 +1,80 @@
+<html><body><font size=-1>
+SQL databases can perform set operations on queries. This can be handy when you need to do something that normal queries just don't seem to handle. You can take two queries and perform union, intersection or subtraction operations between them. (The supported operations, as always, vary from one database engine to another).<br>
+<br>
+The syntax for the set operations looks like this:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT .. set_operator SELECT ..</font>
+</td></tr></table><br>
+<br>
+The set operators are:<br>
+<br>
+<br>
+UNION<br>
+UNION combines the two queries and discards the duplicates. For instance,<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT 1 UNION SELECT 1 UNION SELECT 3</font><br>
+<font size=-2>(<a href="SELECT 1 UNION SELECT 1 UNION SELECT 3">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+returns only two rows, as 1 is duplicated.<br>
+<br>
+Thus, doing this kind of query:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT COUNT() FROM (SELECT starid FROM stars UNION SELECT starid FROM planets)</font><br>
+<font size=-2>(<a href="SELECT COUNT() FROM (SELECT starid FROM stars UNION SELECT starid FROM planets)">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+..is a very complicated way of counting all stars.<br>
+<br>
+Unions are quite useful when combining different kinds of data, such as subtotals and grand totals to some kind of report.<br>
+<br>
+<br>
+UNION ALL<br>
+The UNION ALL operation works the same way as UNION, except that it does not discard the duplicates. Looking at the same examples with UNION ALL:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 3</font><br>
+<font size=-2>(<a href="SELECT 1 UNION ALL SELECT 1 UNION ALL SELECT 3">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+..now returns three rows, and<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT COUNT() FROM (SELECT starid FROM stars UNION ALL SELECT starid FROM planets)</font><br>
+<font size=-2>(<a href="SELECT COUNT() FROM (SELECT starid FROM stars UNION ALL SELECT starid FROM planets)">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+..returns a number that's higher than the star count - in fact, it's the sum of the number of stars and the number of planets in the galaxy.<br>
+<br>
+<br>
+INTERSECT<br>
+Intersection returns only the rows which match. If we replace the UNION with INTERSECT in our stars-planets count query:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT COUNT() FROM (SELECT starid FROM stars INTERSECT SELECT starid FROM planets)</font><br>
+<font size=-2>(<a href="SELECT COUNT() FROM (SELECT starid FROM stars INTERSECT SELECT starid FROM planets)">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+..we will get the number of stars with planets.<br>
+<br>
+<br>
+EXCEPT<br>
+The EXCEPT operator performs set subtraction. Looking at the same example again:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT COUNT() FROM (SELECT starid FROM stars EXCEPT SELECT starid FROM planets)</font><br>
+<font size=-2>(<a href="SELECT COUNT() FROM (SELECT starid FROM stars EXCEPT SELECT starid FROM planets)">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+..will return the number of stars which do not have any planets.<br>
+<br>
+<b>Build a query</b> which returns starids from planets.<br>
+The starids should be selected so that for each starid (x) in the list:<br>
+- there should exist a planet with a starid that's three times x<br>
+but<br>
+- there should not exist a planet with starid two times x.<br>
+Only use starids from the planets table.<br>
+</font></body></html>

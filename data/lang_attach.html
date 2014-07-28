@@ -1,0 +1,63 @@
+<html><head><title>Query Language Understood by SQLite: ATTACH DATABASE</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>ATTACH DATABASE</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">sql-statement</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">ATTACH </font></b>[<b><font color="#2c2cf0">DATABASE</font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">database-filename</font></i><b><font color="#2c2cf0"> AS </font></b><i><font color="#ff3434">database-name</font></i><b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+
+<p>The ATTACH DATABASE statement adds a preexisting database 
+file to the current database connection.  If the filename contains 
+punctuation characters it must be quoted.  The names 'main' and 
+'temp' refer to the main database and the database used for 
+temporary tables.  These cannot be detached.  Attached databases 
+are removed using the <a href="lang_detach.html">DETACH DATABASE</a> 
+statement.</p>
+
+<p>You can read from and write to an attached database and you
+can modify the schema of the attached database.  This is a new
+feature of SQLite version 3.0.  In SQLite 2.8, schema changes
+to attached databases were not allowed.</p>
+
+<p>You cannot create a new table with the same name as a table in 
+an attached database, but you can attach a database which contains
+tables whose names are duplicates of tables in the main database.  It is 
+also permissible to attach the same database file multiple times.</p>
+
+<p>Tables in an attached database can be referred to using the syntax 
+<i>database-name.table-name</i>.  If an attached table doesn't have 
+a duplicate table name in the main database, it doesn't require a 
+database name prefix.  When a database is attached, all of its 
+tables which don't have duplicate names become the 'default' table
+of that name.  Any tables of that name attached afterwards require the table 
+prefix. If the 'default' table of a given name is detached, then 
+the last table of that name attached becomes the new default.</p>
+
+<p>
+Transactions involving multiple attached databases are atomic,
+assuming that the main database is not ":memory:".  If the main
+database is ":memory:" then 
+transactions continue to be atomic within each individual
+database file. But if the host computer crashes in the middle
+of a COMMIT where two or more database files are updated,
+some of those files might get the changes where others
+might not.
+Atomic commit of attached databases is a new feature of SQLite version 3.0.
+In SQLite version 2.8, all commits to attached databases behaved as if
+the main database were ":memory:".
+</p>
+
+<p>There is a compile-time limit of 10 attached database files.</p>
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

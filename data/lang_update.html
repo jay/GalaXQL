@@ -1,0 +1,37 @@
+<html><head><title>Query Language Understood by SQLite: UPDATE</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>UPDATE</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">sql-statement</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">UPDATE </font></b>[<b><font color="#2c2cf0"> OR </font></b><i><font color="#ff3434">conflict-algorithm</font></i><b><font color="#2c2cf0"> </font></b>]<b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0"></font></b><i><font color="#ff3434">database-name</font></i><b><font color="#2c2cf0"> <big>.</big></font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">table-name</font></i><b><font color="#2c2cf0"><br>
+SET </font></b><i><font color="#ff3434">assignment</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0"><big>,</big> </font></b><i><font color="#ff3434">assignment</font></i><b><font color="#2c2cf0"></font></b>]<b><font color="#2c2cf0"></font></b><big>*</big><b><font color="#2c2cf0"><br>
+</font></b>[<b><font color="#2c2cf0">WHERE </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"></font></b>]<b><font color="#2c2cf0"></font></b></td></tr>
+<tr><td align="right" valign="top">
+<i><font color="#ff3434">assignment</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0"></font></b><i><font color="#ff3434">column-name</font></i><b><font color="#2c2cf0"> <big>=</big> </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+
+<p>The UPDATE statement is used to change the value of columns in 
+selected rows of a table.  Each assignment in an UPDATE specifies
+a column name to the left of the equals sign and an arbitrary expression
+to the right.  The expressions may use the values of other columns.
+All expressions are evaluated before any assignments are made.
+A WHERE clause can be used to restrict which rows are updated.</p>
+
+<p>The optional conflict-clause allows the specification of an alternative
+constraint conflict resolution algorithm to use during this one command.
+See the section titled
+<a href="lang_conflict.html">ON CONFLICT</a> for additional information.</p>
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

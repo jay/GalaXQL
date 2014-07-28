@@ -1,0 +1,59 @@
+<html><head><title>Query Language Understood by SQLite: COPY</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>COPY</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">sql-statement</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">COPY </font></b>[<b><font color="#2c2cf0"> OR </font></b><i><font color="#ff3434">conflict-algorithm</font></i><b><font color="#2c2cf0"> </font></b>]<b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0"></font></b><i><font color="#ff3434">database-name</font></i><b><font color="#2c2cf0"> <big>.</big></font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">table-name</font></i><b><font color="#2c2cf0"> FROM </font></b><i><font color="#ff3434">filename</font></i><b><font color="#2c2cf0"><br>
+</font></b>[<b><font color="#2c2cf0"> USING DELIMITERS </font></b><i><font color="#ff3434">delim</font></i><b><font color="#2c2cf0"> </font></b>]<b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+
+<p>The COPY command is available in SQLite version 2.8 and earlier.
+The COPY command has been removed from SQLite version 3.0 due to
+complications in trying to support it in a mixed UTF-8/16 environment.
+In version 3.0, the <a href="sqlite.html">command-line shell</a>
+contains a new command <b>.import</b> that can be used as a substitute
+for COPY.
+</p>
+
+<p>The COPY command is an extension used to load large amounts of
+data into a table.  It is modeled after a similar command found
+in PostgreSQL.  In fact, the SQLite COPY command is specifically
+designed to be able to read the output of the PostgreSQL dump
+utility <b>pg_dump</b> so that data can be easily transferred from
+PostgreSQL into SQLite.</p>
+
+<p>The table-name is the name of an existing table which is to
+be filled with data.  The filename is a string or identifier that
+names a file from which data will be read.  The filename can be
+the <b>STDIN</b> to read data from standard input.</p>
+
+<p>Each line of the input file is converted into a single record
+in the table.  Columns are separated by tabs.  If a tab occurs as
+data within a column, then that tab is preceded by a baskslash "\"
+character.  A baskslash in the data appears as two backslashes in
+a row.  The optional USING DELIMITERS clause can specify a delimiter
+other than tab.</p>
+
+<p>If a column consists of the character "\N", that column is filled
+with the value NULL.</p>
+
+<p>The optional conflict-clause allows the specification of an alternative
+constraint conflict resolution algorithm to use for this one command.
+See the section titled
+<a href="lang_conflict.html">ON CONFLICT</a> for additional information.</p>
+
+<p>When the input data source is STDIN, the input can be terminated
+by a line that contains only a baskslash and a dot:
+"<font color="#2c2cf0"><big>\.</big></font>".</p>
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

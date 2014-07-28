@@ -1,0 +1,42 @@
+<html><head><title>Query Language Understood by SQLite: REINDEX</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>REINDEX</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">sql-statement</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">REINDEX </font></b><i><font color="#ff3434">collation name</font></i><b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">sql-statement</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">REINDEX </font></b>[<b><font color="#2c2cf0"></font></b><i><font color="#ff3434">database-name</font></i><b><font color="#2c2cf0"> <big>.</big></font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">table/index-name</font></i><b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+
+<p>The REINDEX command is used to delete and recreate indices from scratch.
+This is useful when the definition of a collation sequence has changed.
+</p>
+
+<p>In the first form, all indices in all attached databases that use the
+named collation sequence are recreated. In the second form, if 
+<i>[database-name.]table/index-name</i> identifies a table, then all indices
+associated with the table are rebuilt. If an index is identified, then only
+this specific index is deleted and recreated.
+</p>
+
+<p>If no <i>database-name</i> is specified and there exists both a table or
+index and a collation sequence of the specified name, then indices associated
+with the collation sequence only are reconstructed. This ambiguity may be
+dispelled by always specifying a <i>database-name</i> when reindexing a
+specific table or index.
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</p></body></html>

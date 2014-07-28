@@ -1,0 +1,41 @@
+<html><body><font size=-1>
+Indexes are used to speed up the database. As such, they may be quite different on different database engines.<br>
+<br>
+Let's say we create a new table, here:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>CREATE TABLE gateway (star1 INTEGER PRIMARY KEY, star2 INTEGER)</font><br>
+<font size=-2>(<a href="CREATE TABLE gateway (star1 INTEGER PRIMARY KEY, star2 INTEGER)">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+And we populate it with some random data:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>INSERT INTO gateway SELECT starid, RANDOM()%12500+12500 FROM stars WHERE starid%100=0</font><br>
+<font size=-2>(<a href="INSERT INTO gateway SELECT starid, RANDOM()%12500+12500 FROM stars WHERE starid%100=0">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+(The RANDOM() function and the % modulo operator are SQLite specific, and may not appear in other database engines).<br>
+<br>
+After this, a very innocent-looking query, like the following, can take a <i>very</i> long time: (if GalaXQL seems slow to you generally, you may wish to skip this one)<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT starid FROM stars, gateway WHERE star2=starid</font><br>
+<font size=-2>(<a href="SELECT starid FROM stars, gateway WHERE star2=starid">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+The reason for the slowness is that the database engine has no idea where to find the 'star2' value that matches the 'starid' value, and thus has to go through the gateway table completely for each star.<br>
+<br>
+Now, if we add an index to the table:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>CREATE INDEX gateways_star2 ON gateway (star2)</font><br>
+<font size=-2>(<a href="CREATE INDEX gateways_star2 ON gateway (star2)">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+..we will find that the very same SELECT query is faster by several orders of magnitude. (The reason why we don't need an index for the PRIMARY KEY is that SQLite creates indexes for primary keys automatically).<br>
+<br>
+You may have noticed that the 'gateway' table is singular while stars, planets and moons are plural.<br>
+<br>
+<b>Use ALTER TABLE to rename</b> the 'gateway' table to 'gateways'. (ALTER TABLE was covered in chapter 16).<br>
+</font></body></html>

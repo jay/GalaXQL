@@ -1,0 +1,28 @@
+<html><head><title>Query Language Understood by SQLite: DETACH DATABASE</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>DETACH DATABASE</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">sql-command</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">DETACH </font></b>[<b><font color="#2c2cf0">DATABASE</font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">database-name</font></i><b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+
+<p>This statement detaches an additional database connection previously 
+attached using the <a href="lang_attach.html">ATTACH DATABASE</a> statement.  It
+is possible to have the same database file attached multiple times using 
+different names, and detaching one connection to a file will leave the 
+others intact.</p>
+
+<p>This statement will fail if SQLite is in the middle of a transaction.</p>
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

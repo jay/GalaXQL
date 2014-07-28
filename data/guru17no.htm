@@ -1,0 +1,9 @@
+<html><body><font size=-1>
+That doesn't seem to be it.<br>
+<br>
+Did you remember to clear the hilighted table before inserting?<br>
+<br>
+You will want to find the starid which has the highest sum of planet count and moon count. To do so, you'll need to construct a query which joins the planets table with a query that calculates that total moons per planet, calculates the sum of two counts (using COALESCE to handle any NULL sums), groups the results by starid, then orders by both the sum and the star id.<br>
+<br>
+It's possible to do this with just one query, but I won't mind if you use several.<br>
+</font></body></html>

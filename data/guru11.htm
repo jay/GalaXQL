@@ -1,0 +1,27 @@
+<html><body><font size=-1>
+The results of a query can be queried just like a real table. (If this doesn't make your head hurt, then probably nothing in SQL will).<br>
+<br>
+Let's say we want to find out how many stars have higher than average intensity.<br>
+<br>
+First, we'd find the average intensity by calling:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT avg(intensity) FROM stars</font><br>
+<font size=-2>(<a href="SELECT avg(intensity) FROM stars">Try it!</a>)</font></td></tr></table><br>
+<br>
+And we know we can count the resulting rows with COUNT(). Combining these, we get:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT COUNT() FROM stars, (SELECT AVG(intensity) AS ai FROM stars) WHERE intensity &gt; ai</font><br>
+<font size=-2>(<a href="SELECT COUNT() FROM stars, (SELECT AVG(intensity) AS ai FROM stars) WHERE intensity > ai">Try it!</a>)</font></td></tr></table><br>
+<br>
+We can continue this by doing a sub-subquery. Here we count the stars that have higher than average intensity of only those stars that have higher than average intensity.<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color="blue">SELECT COUNT() FROM stars, (SELECT AVG(intensity) AS ai2 FROM stars, (SELECT AVG(intensity) AS ai FROM stars) WHERE intensity &gt; ai) WHERE intensity &gt; ai2</font><br>
+<font size=-2>(<a href="SELECT COUNT() FROM stars, (SELECT AVG(intensity) AS ai2 FROM stars, (SELECT AVG(intensity) AS ai FROM stars) WHERE intensity > ai) WHERE intensity > ai2">Try it!</a>)</font></td></tr></table><br>
+<br>
+Note that we had to use aliases in the above query to resolve the ambiguity between the average intensities!<br>
+<br>
+<b>Hilight the star (or stars)</b> which has the planet with the highest orbit distance in the galaxy. Remember to clear the old hilights before beginning.
+</font></body></html>

@@ -1,0 +1,468 @@
+<html><head><title>Query Language Understood by SQLite: expression</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>expression</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">expr</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0"></font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">binary-op</font></i><b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0">NOT</font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">like-op</font></i><b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0">ESCAPE </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"></font></b>]<b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">unary-op</font></i><b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+<big>(</big> </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> <big>)</big> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">column-name</font></i><b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">table-name</font></i><b><font color="#2c2cf0"> <big>.</big> </font></b><i><font color="#ff3434">column-name</font></i><b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">database-name</font></i><b><font color="#2c2cf0"> <big>.</big> </font></b><i><font color="#ff3434">table-name</font></i><b><font color="#2c2cf0"> <big>.</big> </font></b><i><font color="#ff3434">column-name</font></i><b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">literal-value</font></i><b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">parameter</font></i><b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">function-name</font></i><b><font color="#2c2cf0"> <big>(</big> </font></b><i><font color="#ff3434">expr-list</font></i><b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"> <big>*</big> <big>)</big> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> ISNULL </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> NOTNULL </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0">NOT</font></b>]<b><font color="#2c2cf0"> BETWEEN </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> AND </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0">NOT</font></b>]<b><font color="#2c2cf0"> IN <big>(</big> </font></b><i><font color="#ff3434">value-list</font></i><b><font color="#2c2cf0"> <big>)</big> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0">NOT</font></b>]<b><font color="#2c2cf0"> IN <big>(</big> </font></b><i><font color="#ff3434">select-statement</font></i><b><font color="#2c2cf0"> <big>)</big> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0">NOT</font></b>]<b><font color="#2c2cf0"> IN </font></b>[<b><font color="#2c2cf0"></font></b><i><font color="#ff3434">database-name</font></i><b><font color="#2c2cf0"> <big>.</big></font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">table-name</font></i><b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+</font></b>[<b><font color="#2c2cf0">EXISTS</font></b>]<b><font color="#2c2cf0"> <big>(</big> </font></b><i><font color="#ff3434">select-statement</font></i><b><font color="#2c2cf0"> <big>)</big> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+CASE </font></b>[<b><font color="#2c2cf0"></font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"></font></b>]<b><font color="#2c2cf0"> </font></b>(<b><font color="#2c2cf0"> WHEN </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> THEN </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> </font></b>)+<b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0">ELSE </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"></font></b>]<b><font color="#2c2cf0"> END </font></b><big>|</big><b><font color="#2c2cf0"><br>
+CAST <big>(</big> </font></b><i><font color="#ff3434">expr</font></i><b><font color="#2c2cf0"> AS </font></b><i><font color="#ff3434">type</font></i><b><font color="#2c2cf0"> <big>)</big></font></b></td></tr>
+<tr><td align="right" valign="top">
+<i><font color="#ff3434">like-op</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">LIKE </font></b><big>|</big><b><font color="#2c2cf0"> GLOB </font></b><big>|</big><b><font color="#2c2cf0"> REGEXP</font></b></td></tr>
+</tbody></table>
+
+<p>This section is different from the others.  Most other sections of
+this document talks about a particular SQL command.  This section does
+not talk about a standalone command but about "expressions" which are 
+subcomponents of most other commands.</p>
+
+<p>SQLite understands the following binary operators, in order from
+highest to lowest precedence:</p>
+
+<blockquote><pre><font color="#2c2cf0"><big>||
+*    /    %
++    -
+&lt;&lt;   &gt;&gt;   &amp;    |
+&lt;    &lt;=   &gt;    &gt;=
+=    ==   !=   &lt;&gt;   </big>IN
+AND   
+OR</font>
+</pre></blockquote>
+
+<p>Supported unary operators are these:</p>
+
+<blockquote><pre><font color="#2c2cf0"><big>-    +    !    ~</big></font>
+</pre></blockquote>
+
+<p>Note that there are two variations of the equals and not equals
+operators.  Equals can be either
+<font color="#2c2cf0"><big>=</big></font> or <font color="#2c2cf0"><big>==</big></font>.
+The non-equals operator can be either
+<font color="#2c2cf0"><big>!=</big></font> or <font color="#2c2cf0"><big>&lt;&gt;</big></font>.
+The <font color="#2c2cf0"><big>||</big></font> operator is "concatenate" - it joins together
+the two strings of its operands.
+The operator <font color="#2c2cf0"><big>%</big></font> outputs the remainder of its left 
+operand modulo its right operand.</p>
+
+<p>The result of any binary operator is a numeric value, except
+for the <font color="#2c2cf0"><big>||</big></font> concatenation operator which gives a string
+result.</p>
+
+
+<a name="literal_value"></a>
+<p>
+A literal value is an integer number or a floating point number.
+Scientific notation is supported.  The "." character is always used
+as the decimal point even if the locale setting specifies "," for
+this role - the use of "," for the decimal point would result in
+syntactic ambiguity.  A string constant is formed by enclosing the
+string in single quotes (').  A single quote within the string can
+be encoded by putting two single quotes in a row - as in Pascal.
+C-style escapes using the backslash character are not supported because
+they are not standard SQL.
+BLOB literals are string literals containing hexadecimal data and
+preceded by a single "x" or "X" character.  For example:</p>
+
+<blockquote><pre>X'53514697465'
+</pre></blockquote>
+
+<p>
+A literal value can also be the token "NULL".
+</p>
+
+<p>
+A parameter specifies a placeholder in the expression for a literal
+value that is filled in at runtime using the
+sqlite3_bind API.
+Parameters can take several forms:
+</p><blockquote>
+<table>
+<tbody><tr>
+<td align="right" valign="top"><b>?</b><i>NNN</i></td><td width="20"></td>
+<td>A question mark followed by a number <i>NNN</i> holds a spot for the
+NNN-th parameter.  NNN must be between 1 and 999.</td>
+</tr>
+<tr>
+<td align="right" valign="top"><b>?</b></td><td width="20"></td>
+<td>A question mark that is not followed by a number holds a spot for
+the next unused parameter.</td>
+</tr>
+<tr>
+<td align="right" valign="top"><b>:</b><i>AAAA</i></td><td width="20"></td>
+<td>A colon followed by an identifier name holds a spot for a named
+parameter with the name AAAA.  Named parameters are also numbered.
+The number assigned is the next unused number.  To avoid confusion,
+it is best to avoid mixing named and numbered parameters.</td>
+</tr>
+<tr>
+<td align="right" valign="top"><b>$</b><i>AAAA</i></td><td width="20"></td>
+<td>A dollar-sign followed by an identifier name also holds a spot for a named
+parameter with the name AAAA.  The identifier name in this case can include
+one or more occurances of "::" and a suffix enclosed in "(...)" containing
+any text at all.  This syntax is the form of a variable name in the Tcl
+programming language.</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Parameters that are not assigned values using
+sqlite3_bind are treated
+as NULL.</p>
+
+<a name="like"></a>
+<p>The LIKE operator does a pattern matching comparison. The operand
+to the right contains the pattern, the left hand operand contains the
+string to match against the pattern. 
+
+A percent symbol <font color="#2c2cf0"><big>%</big></font> in the pattern matches any
+sequence of zero or more characters in the string.  An underscore
+<font color="#2c2cf0"><big>_</big></font> in the pattern matches any single character in the
+string.  Any other character matches itself or it's lower/upper case
+equivalent (i.e. case-insensitive matching).  (A bug: SQLite only
+understands upper/lower case for 7-bit Latin characters.  Hence the
+LIKE operator is case sensitive for 8-bit iso8859 characters or UTF-8
+characters.  For example, the expression <b>'a'&nbsp;LIKE&nbsp;'A'</b>
+is TRUE but <b>'æ'&nbsp;LIKE&nbsp;'Æ'</b> is FALSE.).</p>
+
+<p>If the optional ESCAPE clause is present, then the expression
+following the ESCAPE keyword must evaluate to a string consisting of
+a single character. This character may be used in the LIKE pattern
+to include literal percent or underscore characters. The escape
+character followed by a percent symbol, underscore or itself matches a
+literal percent symbol, underscore or escape character in the string,
+respectively. The infix LIKE operator is implemented by calling the
+user function <a href="#likeFunc"> like(<i>X</i>,<i>Y</i>)</a>.</p>
+
+
+The LIKE operator is not case sensitive and will match upper case
+characters on one side against lower case characters on the other.  
+(A bug: SQLite only understands upper/lower case for 7-bit Latin
+characters.  Hence the LIKE operator is case sensitive for 8-bit
+iso8859 characters or UTF-8 characters.  For example, the expression
+<b>'a'&nbsp;LIKE&nbsp;'A'</b> is TRUE but
+<b>'æ'&nbsp;LIKE&nbsp;'Æ'</b> is FALSE.).<p></p>
+
+<p>The infix LIKE
+operator is implemented by calling the user function <a href="#likeFunc">
+like(<i>X</i>,<i>Y</i>)</a>.  If an ESCAPE clause is present, it adds
+a third parameter to the function call. If the functionality of LIKE can be
+overridden by defining an alternative implementation of the
+like() SQL function.</p>
+<p></p>
+
+<a name="glob"></a>
+<p>The GLOB operator is similar to LIKE but uses the Unix
+file globbing syntax for its wildcards.  Also, GLOB is case
+sensitive, unlike LIKE.  Both GLOB and LIKE may be preceded by
+the NOT keyword to invert the sense of the test.  The infix GLOB 
+operator is implemented by calling the user function <a href="#globFunc">
+glob(<i>X</i>,<i>Y</i>)</a> and can be modified by overriding
+that function.</p>
+
+<a name="regexp"></a>
+<p>The REGEXP operator is a special syntax for the regexp()
+user function.  No regexp() user function is defined by default
+and so use of the REGEXP operator will normally result in an
+error message.  If a user-defined function named "regexp"
+is defined at run-time, that function will be called in order
+to implement the REGEXP operator.</p>
+
+<p>A column name can be any of the names defined in the CREATE TABLE
+statement or one of the following special identifiers: "<b>ROWID</b>",
+"<b>OID</b>", or "<b>_ROWID_</b>".
+These special identifiers all describe the
+unique random integer key (the "row key") associated with every 
+row of every table.
+The special identifiers only refer to the row key if the CREATE TABLE
+statement does not define a real column with the same name.  Row keys
+act like read-only columns.  A row key can be used anywhere a regular
+column can be used, except that you cannot change the value
+of a row key in an UPDATE or INSERT statement.
+"SELECT * ..." does not return the row key.</p>
+
+<p>SELECT statements can appear in expressions as either the
+right-hand operand of the IN operator, as a scalar quantity, or
+as the operand of an EXISTS operator.
+As a scalar quantity or the operand of an IN operator,
+the SELECT should have only a single column in its
+result.  Compound SELECTs (connected with keywords like UNION or
+EXCEPT) are allowed.
+With the EXISTS operator, the columns in the result set of the SELECT are
+ignored and the expression returns TRUE if one or more rows exist
+and FALSE if the result set is empty.
+If no terms in the SELECT expression refer to value in the containing
+query, then the expression is evaluated once prior to any other
+processing and the result is reused as necessary.  If the SELECT expression
+does contain variables from the outer query, then the SELECT is reevaluated
+every time it is needed.</p>
+
+<p>When a SELECT is the right operand of the IN operator, the IN
+operator returns TRUE if the result of the left operand is any of
+the values generated by the select.  The IN operator may be preceded
+by the NOT keyword to invert the sense of the test.</p>
+
+<p>When a SELECT appears within an expression but is not the right
+operand of an IN operator, then the first row of the result of the
+SELECT becomes the value used in the expression.  If the SELECT yields
+more than one result row, all rows after the first are ignored.  If
+the SELECT yields no rows, then the value of the SELECT is NULL.</p>
+
+<p>A CAST expression changes the datatype of the <expr> into the
+type specified by &lt;type&gt;. 
+&lt;type&gt; can be any non-empty type name that is valid
+for the type in a column definition of a CREATE TABLE statement.</expr></p>
+
+<p>Both simple and aggregate functions are supported.  A simple
+function can be used in any expression.  Simple functions return
+a result immediately based on their inputs.  Aggregate functions
+may only be used in a SELECT statement.  Aggregate functions compute
+their result across all rows of the result set.</p>
+
+<p>The functions shown below are available by default.  Additional
+functions may be written in C and added to the database engine using
+the sqlite3_create_function()
+API.</p>
+
+<a name="globFunc"></a>
+<a name="likeFunc"></a>
+<table border="0" cellpadding="10">
+<tbody><tr>
+<td align="right" valign="top" width="120">abs(<i>X</i>)</td>
+<td valign="top">Return the absolute value of argument <i>X</i>.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">coalesce(<i>X</i>,<i>Y</i>,...)</td>
+<td valign="top">Return a copy of the first non-NULL argument.  If
+all arguments are NULL then NULL is returned.  There must be at least 
+2 arguments.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">glob(<i>X</i>,<i>Y</i>)</td>
+<td valign="top">This function is used to implement the
+"<b>X GLOB Y</b>" syntax of SQLite.  The
+sqlite3_create_function()
+interface can
+be used to override this function and thereby change the operation
+of the <a href="#globFunc">GLOB</a> operator.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">ifnull(<i>X</i>,<i>Y</i>)</td>
+<td valign="top">Return a copy of the first non-NULL argument.  If
+both arguments are NULL then NULL is returned. This behaves the same as 
+<b>coalesce()</b> above.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">last_insert_rowid()</td>
+<td valign="top">Return the ROWID of the last row insert from this
+connection to the database.  This is the same value that would be returned
+from the <b>sqlite_last_insert_rowid()</b> API function.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">length(<i>X</i>)</td>
+<td valign="top">Return the string length of <i>X</i> in characters.
+If SQLite is configured to support UTF-8, then the number of UTF-8
+characters is returned, not the number of bytes.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">like(<i>X</i>,<i>Y</i> [,<i>Z</i>])</td>
+<td valign="top">
+This function is used to implement the "<b>X LIKE Y [ESCAPE Z]</b>"
+syntax of SQL. If the optional ESCAPE clause is present, then the
+user-function is invoked with three arguments. Otherwise, it is
+invoked with two arguments only. The 
+sqlite_create_function() interface can be used to override this
+function and thereby change the operation of the <a href="#like">LIKE</a> operator. When doing this, it may be important
+to override both the two and three argument versions of the like() 
+function. Otherwise, different code may be called to implement the
+LIKE operator depending on whether or not an ESCAPE clause was 
+specified.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">lower(<i>X</i>)</td>
+<td valign="top">Return a copy of string <i>X</i> will all characters
+converted to lower case.  The C library <b>tolower()</b> routine is used
+for the conversion, which means that this function might not
+work correctly on UTF-8 characters.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">max(<i>X</i>,<i>Y</i>,...)</td>
+<td valign="top">Return the argument with the maximum value.  Arguments
+may be strings in addition to numbers.  The maximum value is determined
+by the usual sort order.  Note that <b>max()</b> is a simple function when
+it has 2 or more arguments but converts to an aggregate function if given
+only a single argument.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">min(<i>X</i>,<i>Y</i>,...)</td>
+<td valign="top">Return the argument with the minimum value.  Arguments
+may be strings in addition to numbers.  The minimum value is determined
+by the usual sort order.  Note that <b>min()</b> is a simple function when
+it has 2 or more arguments but converts to an aggregate function if given
+only a single argument.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">nullif(<i>X</i>,<i>Y</i>)</td>
+<td valign="top">Return the first argument if the arguments are different, 
+otherwise return NULL.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">quote(<i>X</i>)</td>
+<td valign="top">This routine returns a string which is the value of
+its argument suitable for inclusion into another SQL statement.
+Strings are surrounded by single-quotes with escapes on interior quotes
+as needed.  BLOBs are encoded as hexadecimal literals.
+The current implementation of VACUUM uses this function.  The function
+is also useful when writing triggers to implement undo/redo functionality.
+</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">random(*)</td>
+<td valign="top">Return a random integer between -2147483648 and
++2147483647.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">round(<i>X</i>)<br>round(<i>X</i>,<i>Y</i>)</td>
+<td valign="top">Round off the number <i>X</i> to <i>Y</i> digits to the
+right of the decimal point.  If the <i>Y</i> argument is omitted, 0 is 
+assumed.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">soundex(<i>X</i>)</td>
+<td valign="top">Compute the soundex encoding of the string <i>X</i>.
+The string "?000" is returned if the argument is NULL.
+This function is omitted from SQLite by default.
+It is only available the -DSQLITE_SOUNDEX=1 compiler option
+is used when SQLite is built.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">sqlite_version(*)</td>
+<td valign="top">Return the version string for the SQLite library
+that is running.  Example:  "2.8.0"</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">substr(<i>X</i>,<i>Y</i>,<i>Z</i>)</td>
+<td valign="top">Return a substring of input string <i>X</i> that begins
+with the <i>Y</i>-th character and which is <i>Z</i> characters long.
+The left-most character of <i>X</i> is number 1.  If <i>Y</i> is negative
+the the first character of the substring is found by counting from the
+right rather than the left.  If SQLite is configured to support UTF-8,
+then characters indices refer to actual UTF-8 characters, not bytes.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">typeof(<i>X</i>)</td>
+<td valign="top">Return the type of the expression <i>X</i>.  The only 
+return values are "null", "integer", "real", "text", and "blob".
+SQLite's type handling is 
+explained in <a href="datatype3.html">Datatypes in SQLite Version 3</a>.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">upper(<i>X</i>)</td>
+<td valign="top">Return a copy of input string <i>X</i> converted to all
+upper-case letters.  The implementation of this function uses the C library
+routine <b>toupper()</b> which means it may not work correctly on 
+UTF-8 strings.</td>
+</tr>
+</tbody></table>
+
+<p>
+The aggregate functions shown below are available by default.  Additional
+aggregate functions written in C may be added using the 
+sqlite3_create_function()
+API.</p>
+
+<p>
+In any aggregate function that takes a single argument, that argument
+can be preceeded by the keyword DISTINCT.  In such cases, duplicate
+elements are filtered before being passed into the aggregate function.
+For example, the function "count(distinct X)" will return the number
+of distinct values of column X instead of the total number of non-null
+values in column X.
+</p>
+
+<table border="0" cellpadding="10">
+<tbody><tr>
+<td align="right" valign="top" width="120">avg(<i>X</i>)</td>
+<td valign="top">Return the average value of all non-NULL <i>X</i> within a
+group.  Non-numeric values are interpreted as 0.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">count(<i>X</i>)<br>count(*)</td>
+<td valign="top">The first form return a count of the number of times
+that <i>X</i> is not NULL in a group.  The second form (with no argument)
+returns the total number of rows in the group.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">max(<i>X</i>)</td>
+<td valign="top">Return the maximum value of all values in the group.
+The usual sort order is used to determine the maximum.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">min(<i>X</i>)</td>
+<td valign="top">Return the minimum non-NULL value of all values in the group.
+The usual sort order is used to determine the minimum.  NULL is only returned
+if all values in the group are NULL.</td>
+</tr>
+
+<tr>
+<td align="right" valign="top">sum(<i>X</i>)</td>
+<td valign="top">Return the numeric sum of all numeric values in the group.
+   If there are no input rows or all values are NULL, then NULL is returned.
+   NULL is not a helpful result in that case (the correct answer should be
+   zero) but it is what the SQL standard requires and how 
+   most other SQL database engines operate so SQLite does it that way
+   in order to be compatible. 
+   You will probably want to use
+   "<b>coalesce(sum(</b>X<b>),0)</b>" instead of just "<b>sum(</b>X<b>)</b>"
+   to work around this design problem in the SQL language.</td>
+</tr>
+</tbody></table>
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

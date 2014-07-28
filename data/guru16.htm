@@ -1,0 +1,61 @@
+<html><body><font size=-1>
+Sometimes - and hopefully not very often - circumstances arise where you need to change tables that are already in use.<br>
+<br>
+Most of the time its better to create new tables and move the data from the old tables to the new ones, but it may also be possible to use the ALTER TABLE command (I don't think I need to emphasize how dangerous this command can be).<br>
+<br>
+The syntax for the ALTER TABLE command is:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>ALTER TABLE tablename alteration</font></td></tr></table><br>
+<br>
+where some of the typical alternations are: (again, supported features vary from one database engine to the next)<br>
+<br>
+<br>
+RENAME TO<br>
+In order to rename the whole table, you can use the RENAME TO alteration. For example:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>ALTER TABLE stars RENAME TO bright_objects</font><br>
+<font size=-2>(<a href="ALTER TABLE stars RENAME TO bright_objects">Try it!</a>)</font>
+</td></tr></table>
+<br>
+(This will break the database, so be sure to either run it inside a transaction that you can rollback, or rename bright_objects back to stars with a similar command).<br>
+<br>
+<br>
+ADD COLUMN<br>
+To add new fields to a table, you can use the ADD COLUMN alteration. For example:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>ALTER TABLE hilight ADD COLUMN notes TEXT</font><br>
+<font size=-2>(<a href="ALTER TABLE hilight ADD COLUMN notes TEXT">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+Note that this will add NULL values to every row for that column. There are some limitations on what you can add; see the reference for details.<br>
+<br>
+<br>
+RENAME COLUMN.. TO..<br>
+This command can be used to rename a column. SQLite does not support RENAME COLUMN. SQLite does not support MODIFY COLUMN.  Example:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>ALTER TABLE hilight RENAME COLUMN notes TO remarks</font>
+</td></tr></table>
+<br>
+<br>
+MODIFY COLUMN<br>
+To change the data type of a column, you could use this command. SQLite does not support MODIFY COLUMN.<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>ALTER TABLE hilight MODIFY COLUMN remarks CHAR(200) NOT NULL</font>
+</td></tr></table>
+<br>
+<br>
+DROP COLUMN<br>
+Removes a column from a table. SQLite does not support DROP COLUMN.<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>ALTER TABLE hilight DROP COLUMN remarks</font>
+</td></tr></table><br>
+<br>
+<br>
+<b>First, create and populate a table</b> using <a href="CREATE TABLE alter_test (id INTEGER PRIMARY KEY, data TEXT NOT NULL); INSERT INTO alter_test (data) VALUES ('Foo'); INSERT INTO alter_test (data) VALUES ('Bar'); INSERT INTO alter_test (data) VALUES ('Baz');">this command</a>. Rename the table to 'my_table', and add a column called 'moredata'. Add one whole new row and change the 'moredata' value of at least one existing row. (Yes, I'm aware you could do all that by changing the creation commands, but that is not the point of this exercise).<br>
+</font></body></html>

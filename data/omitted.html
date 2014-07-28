@@ -1,0 +1,74 @@
+<html><head><title>Pragma statements supported by SQLite</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+
+<h2>SQL Features That SQLite Does Not Implement</h2>
+
+<p>
+Rather than try to list all the features of SQL92 that SQLite does
+support, it is much easier to list those that it does not.
+Unsupported features of SQL92 are shown below.</p>
+
+<p>
+The order of this list gives some hint as to when a feature might
+be added to SQLite.  Those features near the top of the list are
+likely to be added in the near future.  There are no immediate
+plans to add features near the bottom of the list.
+</p>
+
+<table cellpadding="10">
+
+<tr><td valign="top"><b><nobr>Complete trigger support</nobr></b></td>
+<td width="10">&nbsp;</th>
+<td valign="top">
+  FOR EACH ROW triggers are supported but not FOR EACH STATEMENT triggers. 
+ </td></tr>
+<tr><td valign="top"><b><nobr>Complete ALTER TABLE support</nobr></b></td>
+
+<td width="10">&nbsp;</th>
+<td valign="top">
+  Only the RENAME TABLE and ADD COLUMN variants of the 
+  ALTER TABLE command are supported.  Other kinds of ALTER TABLE operations
+  such as
+  DROP COLUMN, ALTER COLUMN, ADD CONSTRAINT, and so forth are omitted.
+</td></tr>
+<tr><td valign="top"><b><nobr>RIGHT and FULL OUTER JOIN</nobr></b></td>
+<td width="10">&nbsp;</th>
+<td valign="top">
+  LEFT OUTER JOIN is implemented, but not RIGHT OUTER JOIN or
+  FULL OUTER JOIN.
+
+</td></tr>
+<tr><td valign="top"><b><nobr>Writing to VIEWs</nobr></b></td>
+<td width="10">&nbsp;</th>
+<td valign="top">
+  VIEWs in SQLite are read-only.  You may not execute a DELETE, INSERT, or
+  UPDATE statement on a view. But you can create a trigger
+  that fires on an attempt to DELETE, INSERT, or UPDATE a view and do
+  what you need in the body of the trigger.
+</td></tr>
+<tr><td valign="top"><b><nobr>GRANT and REVOKE</nobr></b></td>
+<td width="10">&nbsp;</th>
+<td valign="top">
+  Since SQLite reads and writes an ordinary disk file, the
+  only access permissions that can be applied are the normal
+  file access permissions of the underlying operating system.
+  The GRANT and REVOKE commands commonly found on client/server
+  RDBMSes are not implemented because they would be meaningless
+  for an embedded database engine.
+</td></tr>
+
+</table>
+
+<p>
+If you find other SQL92 features that SQLite does not support, please
+add them to the Wiki page at http://www.sqlite.org/cvstrac/wiki?p=Unsupported
+</p>
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

@@ -1,0 +1,66 @@
+<html><body><font size=-1>
+Database integrity is very important. We've covered constraints as one way of enforcing integrity; triggers are another.<br>
+<br>
+Consider what will happen if you delete a star with planets. The planets and moons will still be there, unless care is taken to remove them.<br>
+<br>
+Even worse, let's say if we remove one star and later on add new stars. What if some of those new stars happen to get the same star id as a removed star?<br>
+<br>
+If this doesn't sound too problematic, how about users in a bank, with several bank accounts?<br>
+<br>
+Triggers are operations that occur automatically when some event happens. The syntax for triggers, and the features supported, may vary from one database engine to another.<br>
+<br>
+Syntax for creating a trigger looks like this:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>CREATE TRIGGER name when event ON tablename action</font>
+</td></tr></table><br>
+<br>
+where 'when' can be BEFORE or AFTER, and 'event' can be any of DELETE, INSERT or UPDATE.<br>
+<br>
+'action' can be FOR EACH ROW BEGIN .. END, FOR EACH STATEMENT BEGIN .. END or WHEN expression BEGIN .. END.<br>
+<br>
+Special table references OLD and NEW exist that can be used in the triggered queries. Several, semicolon-separated actions can be included between BEGIN and END.<br>
+<br>
+For instance, to delete planets when a star is deleted, we could do:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>CREATE TRIGGER stardeleted BEFORE DELETE ON stars FOR EACH ROW BEGIN DELETE FROM planets WHERE planets.starid=OLD.starid; END</font><br>
+<font size=-2>(<a href="CREATE TRIGGER stardeleted BEFORE DELETE ON stars FOR EACH ROW BEGIN DELETE FROM planets WHERE planets.starid=OLD.starid; END">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+Similarily, to delete moons when a planet is deleted, we could do:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>CREATE TRIGGER planetdeleted BEFORE DELETE ON planets FOR EACH ROW BEGIN DELETE FROM moons WHERE OLD.planetid=moons.planetid; END</font><br>
+<font size=-2>(<a href="CREATE TRIGGER planetdeleted BEFORE DELETE ON planets FOR EACH ROW BEGIN DELETE FROM moons WHERE OLD.planetid=moons.planetid; END">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+After the above, you can delete all stars (inside transaction):<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>BEGIN; DELETE FROM stars</font><br>
+<font size=-2>(<a href="BEGIN; DELETE FROM stars">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+Now, if you try to fetch information about moons:<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT * FROM moons</font><br>
+<font size=-2>(<a href="SELECT * FROM moons">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+..you shouldn't be getting any data.<br>
+<br>
+Some database engines support cascades to perform the above kinds of cleanup tasks.<br>
+<br>
+You should now run ROLLBACK to restore the lost data.<br>
+<br>
+Triggers are deleted with the DROP TRIGGER command:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>DROP TRIGGER name</font>
+</td></tr></table><br>
+<br>
+Most database engines also support stored procedures and stored functions which can be used to add further intelligence to the database. They are, however, very database engine specific, so we won't be covering them.<br>
+<br>
+<b>Create a trigger</b> which, when a new star is created, clears the hilight table and inserts the new star id to the hilight table.
+</font></body></html>

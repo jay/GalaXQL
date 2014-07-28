@@ -1,0 +1,48 @@
+<html><body><font size=-1>
+The galaxy consists of three tables - stars, planets and moons. Let's look at planets.<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT * FROM planets</font><br>
+<font size=-2>(<a href="SELECT * FROM planets">Try it!</a>)</font></td></tr></table><br>
+<br>
+Planets have planetid, starid, orbitdistance, name, color and radius.<br>
+<br>
+As you may guess, the starid points to a row in stars. Not all stars have planets, but a star may have several planets.<br>
+<br>
+To list all stars which have planets, you could try:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT stars.starid FROM planets, stars WHERE planets.starid=stars.starid</font><br>
+<font size=-2>(<a href="SELECT stars.starid FROM planets, stars WHERE planets.starid=stars.starid">Try it!</a>)</font></td></tr></table><br>
+<br>
+As you can see, we can SELECT from several tables at once, and make choices on what to select based on several table's fields. Like with column names, we can use aliases for table names, like this:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT s.starid FROM planets AS p, stars AS s WHERE p.starid=s.starid</font><br>
+<font size=-2>(<a href="SELECT s.starid FROM planets AS p, stars AS s WHERE p.starid=s.starid">Try it!</a>)</font></td></tr></table><br>
+<br>
+..which saves some typing in complicated queries.<br>
+<br>
+Now, when you run the above query, you will receive lots of duplicates. This is because one row is returned for each planet, and a star may have several planets. To remove duplicates, you can use the DISTINCT keyword:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT DISTINCT s.starid FROM planets AS p, stars AS s WHERE p.starid=s.starid</font><br>
+<font size=-2>(<a href="SELECT DISTINCT s.starid FROM planets AS p, stars AS s WHERE p.starid=s.starid">Try it!</a>)</font></td></tr></table><br>
+<br>
+The same applies for the relationship between planets and moons. To list all the planets with moons, try:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT DISTINCT p.planetid FROM planets AS p, moons AS m WHERE p.planetid=m.planetid</font><br>
+<font size=-2>(<a href="SELECT DISTINCT p.planetid FROM planets AS p, moons AS m WHERE p.planetid=m.planetid">Try it!</a>)</font></td></tr></table><br>
+<br>
+Finally, to list all the stars with planets with moons..<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT DISTINCT p.starid FROM planets AS p, moons AS m WHERE p.planetid=m.planetid</font><br>
+<font size=-2>(<a href="SELECT DISTINCT p.starid FROM planets AS p, moons AS m WHERE p.planetid=m.planetid">Try it!</a>)</font></td></tr></table><br>
+<br>
+Nothing stops you from doing weird linking such as planets.starid=moons.planetid, but the usefulness of the results from such queries are questionable.<br>
+<br>
+<b>Hilight all stars</b> with starid of at least 20000, which have planets with moons that have an orbit distance of at least 3000. Remember to remove any old hilights before starting.<br>
+
+</font></body></html>

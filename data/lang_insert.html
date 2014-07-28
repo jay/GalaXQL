@@ -1,0 +1,48 @@
+<html><head><title>Query Language Understood by SQLite: INSERT</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>INSERT</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">sql-statement</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">INSERT </font></b>[<b><font color="#2c2cf0">OR </font></b><i><font color="#ff3434">conflict-algorithm</font></i><b><font color="#2c2cf0"></font></b>]<b><font color="#2c2cf0"> INTO </font></b>[<b><font color="#2c2cf0"></font></b><i><font color="#ff3434">database-name</font></i><b><font color="#2c2cf0"> <big>.</big></font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">table-name</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0"><big>(</big></font></b><i><font color="#ff3434">column-list</font></i><b><font color="#2c2cf0"><big>)</big></font></b>]<b><font color="#2c2cf0"> VALUES<big>(</big></font></b><i><font color="#ff3434">value-list</font></i><b><font color="#2c2cf0"><big>)</big> </font></b><big>|</big><b><font color="#2c2cf0"><br>
+INSERT </font></b>[<b><font color="#2c2cf0">OR </font></b><i><font color="#ff3434">conflict-algorithm</font></i><b><font color="#2c2cf0"></font></b>]<b><font color="#2c2cf0"> INTO </font></b>[<b><font color="#2c2cf0"></font></b><i><font color="#ff3434">database-name</font></i><b><font color="#2c2cf0"> <big>.</big></font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">table-name</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0"><big>(</big></font></b><i><font color="#ff3434">column-list</font></i><b><font color="#2c2cf0"><big>)</big></font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">select-statement</font></i><b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+
+<p>The INSERT statement comes in two basic forms.  The first form
+(with the "VALUES" keyword) creates a single new row in an existing table.
+If no column-list is specified then the number of values must
+be the same as the number of columns in the table.  If a column-list
+is specified, then the number of values must match the number of
+specified columns.  Columns of the table that do not appear in the
+column list are filled with the default value, or with NULL if not
+default value is specified.
+</p>
+
+<p>The second form of the INSERT statement takes it data from a
+SELECT statement.  The number of columns in the result of the
+SELECT must exactly match the number of columns in the table if
+no column list is specified, or it must match the number of columns
+name in the column list.  A new entry is made in the table
+for every row of the SELECT result.  The SELECT may be simple
+or compound.  If the SELECT statement has an ORDER BY clause,
+the ORDER BY is ignored.</p>
+
+<p>The optional conflict-clause allows the specification of an alternative
+constraint conflict resolution algorithm to use during this one command.
+See the section titled
+<a href="lang_conflict.html">ON CONFLICT</a> for additional information.
+For compatibility with MySQL, the parser allows the use of the
+single keyword <a href="lang_replace.html">REPLACE</a> as an alias for "INSERT OR REPLACE".
+</p>
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

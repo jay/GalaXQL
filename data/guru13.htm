@@ -1,0 +1,37 @@
+<html><body><font size=-1>
+When discussing subqueries,I mentioned that query results are like tables, in that they can be queried with SELECT. Sometimes a query is useful enough to keep around and made "somewhat permanent" - this is where VIEWs come in.<br>
+<br>
+The syntax for creating a VIEW is as follows:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>CREATE VIEW viewname AS query</font></td></tr></table><br>
+<br>
+So, for example, we could create a view out of starids, planet ids and moon ids like this:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>CREATE VIEW relations AS SELECT stars.starid AS star, planets.planetid AS planet, moons.moonid AS moon FROM stars LEFT OUTER JOIN planets ON stars.starid=planets.starid LEFT OUTER JOIN moons ON planets.planetid=moons.planetid</font><br>
+<font size=-2>(<a href="CREATE VIEW relations AS SELECT stars.starid AS star, planets.planetid AS planet, moons.moonid AS moon FROM stars LEFT OUTER JOIN planets ON stars.starid=planets.starid LEFT OUTER JOIN moons ON planets.planetid=moons.planetid">Try it!</a>)</font></td></tr></table><br>
+<br>
+After this, the view can be queried just like a table:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT * FROM relations</font><br>
+<font size=-2>(<a href="SELECT * FROM relations">Try it!</a>)</font></td></tr></table><br>
+<br>
+Unlike tables, views don't contain any data--they're just a saved query.  So if you change the data in any of the tables where a view gets its information, the data returned by the view will also change.<br>
+<br>
+There are some limitations, though. SELECT will work, but just about any other operation will depend on the database engine. SQLite will only let you perform SELECTs on VIEWs.  Other database engines permit you to INSERT INTO or UPDATE records in a view in certian circumstances, but you're really changing the data in the underlying table.<br>
+<br>
+You can get rid of an undesired VIEW with the DROP VIEW command:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>DROP VIEW viewname</font></td></tr></table><br>
+<br>
+This command will only remove the VIEW; no actual data will be removed. Thus, to remove the VIEW we created above, you'd run:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>DROP VIEW relations</font><br>
+<font size=-2>(<a href="DROP VIEW relations">Try it!</a>)</font></td></tr></table><br>
+<br>
+<b>Create a VIEW called "numbers"</b> with the columns "three", "intensity" and "x", where "x" and "intensity" come from the stars table, "three" contains the number 3 on all rows. For additional fun, sort the whole thing by "x" - although I won't care.
+</font></body></html>

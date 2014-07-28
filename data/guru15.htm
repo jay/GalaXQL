@@ -1,0 +1,28 @@
+<html><body><font size=-1>
+Databases often contain lots of important information, such as people's money, customer data, or the parameters of a virtual universe. If this information goes out of sync, disastrous things might happen (if nothing else, the person responsible for the database might get fired).<br>
+<br>
+To help this a bit, the tables can be created with some constraints built in. Constraints are part of the data type definition. For example, you could have:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>CREATE TABLE months (monthid INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL)</font>
+</td></tr></table><br>
+<br>
+Supported constraints vary from one database engine to the next. Typical constraints include:<br>
+<br>
+PRIMARY KEY<br>
+The primary key of a table is used to single out a specific row in the table. Hence, it must be unique and (most likely) also not NULL. SQLite generates unique values for the PRIMARY KEY, at least if the PRIMARY KEY is INTEGER.<br>
+<br>
+NOT NULL<br>
+Columns marked NOT NULL will not accept NULL values. Attempting to insert data into a table so that a NOT NULL column would include NULL will result in an error.<br>
+<br>
+UNIQUE<br>
+The unique columns must contain different values for each row.<br>
+<br>
+FOREIGN KEY<br>
+Pair for PRIMARY KEY. Having this constraint enforces that the value in FOREIGN KEY can be found as PRIMARY KEY on some other table. SQLite supports FOREIGN KEYs, but it must be enabled by running <font color=blue>PRAGMA foreign_keys = ON</font>.<br>
+<br>
+CHECK<br>
+The CHECK constraint can be used to enforce the values of the column to some range, using the same kinds of operations as when choosing rows in SELECT, e.g. <font color=blue>CHECK(starid&lt;10000)</font><br>
+<br>
+<b>Create a table</b> called "quotes" with two columns: "id", which is primary key, and takes integers, and "quote" which contains non-null text strings, such as quote of the day (http://www.qotd.org/). Fill in a couple of rows so that I have something to query for.
+</font></body></html>

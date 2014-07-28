@@ -1,0 +1,32 @@
+<html><head><title>Query Language Understood by SQLite: EXPLAIN</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>EXPLAIN</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">sql-statement</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">EXPLAIN </font></b><i><font color="#ff3434">sql-statement</font></i><b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+
+<p>The EXPLAIN command modifier is a non-standard extension.  The
+idea comes from a similar command found in PostgreSQL, but the operation
+is completely different.</p>
+
+<p>If the EXPLAIN keyword appears before any other SQLite SQL command
+then instead of actually executing the command, the SQLite library will
+report back the sequence of virtual machine instructions it would have
+used to execute the command had the EXPLAIN keyword not been present.
+For additional information about virtual machine instructions see
+the architecture description or the documentation
+on available opcodes for the virtual machine on the SQLite website (www.sqlite.org).</p>
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

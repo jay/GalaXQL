@@ -1,0 +1,30 @@
+<html><body><font size=-1>
+While you could change some information in a database by first using DELETE FROM to remove a row and then INSERT INTO to replace it, it is often much simpler (not to mention safer!) to simply use the UPDATE command.<br>
+<br>
+The syntax for the UPDATE command is:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>UPDATE tablename SET operations WHERE conditions</font></td></tr></table><br>
+<br>
+As usual, the WHERE part can be omitted to operate on all rows in the table.<br>
+<br>
+UPDATE can also be rather dangerous, so it's best to use it inside transactions. Try this one:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>BEGIN;UPDATE stars SET x=COALESCE(0.1/x,x), y=COALESCE(0.1/y,y)</font><br>
+<font size=-2>(<a href="BEGIN;UPDATE stars SET x=COALESCE(0.1/x,x), y=COALESCE(0.1/y,y)">Try it!</a>)</font></td></tr></table>
+<br>
+..which will mess up the galaxy pretty well. The COALESCE function is present to handle division by zero errors, which, at least on SQLite, results in NULL. ROLLBACK the change.<br>
+<br>
+The WHERE clause can be used to limit the changes to certain rows, just like with SELECT, UPDATE or DELETE.<br>
+<br>
+Try this one for more fun:<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>BEGIN; UPDATE stars SET z=z+(starid-12500)*0.00005</font><br>
+<font size=-2>(<a href="BEGIN; UPDATE stars SET z=z+(starid-12500)*0.00005">Try it!</a>)</font></td></tr></table>
+<br>
+<br>
+Remember to ROLLBACK after you've done looking at that one.<br>
+<br>
+<b>Starting from the normal galaxy</b>, update it so that you swap the x and z coordinates for stars which have star id between 10000 and 15000.<br>
+</font></body></html>

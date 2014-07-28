@@ -1,0 +1,49 @@
+<html><body><font size=-1>
+In order to be able to input any data into a database, you will first need to plan and create tables. While designing good tables and their relations is a challenge, creating a single table is not very complicated.<br>
+<br>
+<font color=red>Note!</font> If you create your own tables, be sure to save the queries into a file in case you need to regenerate the database; the 'regenerate database' command wipes the whole database, including any and all tables you may have created.<br>
+<br>
+Tables are created with CREATE TABLE, with the syntax:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>CREATE TABLE tablename (columnname datatype constraints, ...)</font>
+</td></tr></table><br>
+<br>
+Alternatively, you could create a table the same way you created a view, just replacing "VIEW" with "TABLE" in the query SQL.  Unlike a view, however, the new table will have a <em>copy</em> of the data and won't be automatically updated if the data in the original tables change.<br>
+<br>
+Data type definitions are something where SQLite differs greatly from just about any other database engine. Basically, SQLite does not care about the data definions and happily lets you store text into a field declared as INTEGER. There are some exceptions to this rule, but that's basically it. (Closer study on how SQLite handles data types is way outside the scope of this tutorial. So, if you really need to know, please check the reference).<br>
+<br>
+Typically, a database engine has data types such as CHAR(length), VARCHAR(length), NUMERIC(length.decimals), INTEGER, REAL, FLOAT(length), DOUBLE, DATE, TIME, MONEY, BLOB.. The supported data types vary from one database engine to another.<br>
+<br>
+Basically, you should think about what kinds of things you will be storing in the database, and choose the data types accordingly. The smaller datatypes you can use to store information, the faster the database will function; thus, storing 'first name' as a 1000-character string might not be efficient, but on the other hand, if you make the field too small, you might run into trouble later.<br>
+<br>
+Let's say we want to create a table about persons.<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>CREATE TABLE persons (personid INTEGER PRIMARY KEY, name TEXT, hats INTEGER)</font><br>
+<font size=-2>(<a href="CREATE TABLE persons (personid INTEGER PRIMARY KEY, name TEXT, hats INTEGER)">Try it!</a>)</font></td></tr></table><br>
+<br>
+This will create a table with columns personid (which is type INTEGER and is the PRIMARY KEY of this table - we'll look deeper into this in the next chapter), name (which is TEXT) and hats (the number of hats this person owns - definitely INTEGER).<br>
+<br>
+We can use INSERT INTO to populate this table a bit.<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>INSERT INTO persons (name, hats) VALUES ('John', 3);INSERT INTO persons (name, hats) VALUES ('Mary', 2)</font><br>
+<font size=-2>(<a href="INSERT INTO persons (name, hats) VALUES ('John', 3);INSERT INTO persons (name, hats) VALUES ('Mary', 2)">Try it!</a>)</font></td></tr></table><br>
+<br>
+Now, if you SELECT everything from persons, you'll see that the information is there (and that SQLite filled out the person id for us).<br>
+<br>
+After this, if we want to create a 'cars' table and add a column 'personid' into it (type INTEGER), we could link cars to persons. Or we could create a 'friends' table to link two persons together. And so on.<br>
+<br>
+Tables are destroyed with the DROP TABLE command. This is even more dangerous than the DELETE FROM command, but unlike DELETE FROM, it is not needed very often. Be very, very careful with it nevertheless.<br>
+<br>
+To destroy the 'persons' table, try:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color="blue">DROP TABLE persons</font><br>
+<font size=-2>(<a href="DROP TABLE persons">Try it!</a>)</font></td></tr></table><br>
+<br>
+The reason why I did not make an example related to the stars database is basically due to performance. The stars database is so large that if we link information to it, the queries would be rather slow without certain optimizations which we won't be discussing for a long time yet.<br>
+<br>
+<b>Create a table</b> named 'colors' with the columns 'color' and 'description'. Color is integer, description is text. Populate the table with color values from -3 to 10; each star class has its own color; fill the description with something (I won't care exactly what). Basic idea is that it will be possible to make a join between stars and colors where stars' class is compared to colors' color number.
+</font></body></html>

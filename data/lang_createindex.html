@@ -1,0 +1,67 @@
+<html><head><title>Query Language Understood by SQLite: CREATE INDEX</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>CREATE INDEX</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">sql-statement</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">CREATE </font></b>[<b><font color="#2c2cf0">UNIQUE</font></b>]<b><font color="#2c2cf0"> INDEX </font></b>[<b><font color="#2c2cf0"></font></b><i><font color="#ff3434">database-name</font></i><b><font color="#2c2cf0"> <big>.</big></font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">index-name</font></i><b><font color="#2c2cf0"> <br>
+ON </font></b><i><font color="#ff3434">table-name</font></i><b><font color="#2c2cf0"> <big>(</big> </font></b><i><font color="#ff3434">column-name</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0"><big>,</big> </font></b><i><font color="#ff3434">column-name</font></i><b><font color="#2c2cf0"></font></b>]<b><font color="#2c2cf0"></font></b><big>*</big><b><font color="#2c2cf0"> <big>)</big><br>
+</font></b>[<b><font color="#2c2cf0"> ON CONFLICT </font></b><i><font color="#ff3434">conflict-algorithm</font></i><b><font color="#2c2cf0"> </font></b>]<b><font color="#2c2cf0"></font></b></td></tr>
+<tr><td align="right" valign="top">
+<i><font color="#ff3434">column-name</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0"></font></b><i><font color="#ff3434">name</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0"> COLLATE </font></b><i><font color="#ff3434">collation-name</font></i><b><font color="#2c2cf0"></font></b>]<b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0"> ASC </font></b><big>|</big><b><font color="#2c2cf0"> DESC </font></b>]<b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+
+<p>The CREATE INDEX command consists of the keywords "CREATE INDEX" followed
+by the name of the new index, the keyword "ON", the name of a previously
+created table that is to be indexed, and a parenthesized list of names of
+columns in the table that are used for the index key.
+Each column name can be followed by one of the "ASC" or "DESC" keywords
+to indicate sort order, but the sort order is ignored in the current
+implementation.  Sorting is always done in ascending order.</p>
+
+<p>The COLLATE clause following each column name defines a collating
+sequence used for text entires in that column.  The default collating
+sequence is the collating sequence defined for that column in the
+CREATE TABLE statement.  Or if no collating sequence is otherwise defined,
+the built-in BINARY collating sequence is used.</p>
+
+<p>There are no arbitrary limits on the number of indices that can be
+attached to a single table, nor on the number of columns in an index.</p>
+
+<p>If the UNIQUE keyword appears between CREATE and INDEX then duplicate
+index entries are not allowed.  Any attempt to insert a duplicate entry
+will result in an error.</p>
+
+<p>The optional conflict-clause allows the specification of an alternative
+default constraint conflict resolution algorithm for this index.
+This only makes sense if the UNIQUE keyword is used since otherwise
+there are not constraints on the index.  The default algorithm is
+ABORT.  If a COPY, INSERT, or UPDATE statement specifies a particular
+conflict resolution algorithm, that algorithm is used in place of
+the default algorithm specified here.
+See the section titled
+<a href="lang_conflict.html">ON CONFLICT</a> for additional information.</p>
+
+<p>The exact text
+of each CREATE INDEX statement is stored in the <b>sqlite_master</b>
+or <b>sqlite_temp_master</b> table, depending on whether the table
+being indexed is temporary.  Every time the database is opened,
+all CREATE INDEX statements
+are read from the <b>sqlite_master</b> table and used to regenerate
+SQLite's internal representation of the index layout.</p>
+
+<p>Indexes are removed with the <a href="lang_dropindex.html">DROP INDEX</a> 
+command.</p>
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

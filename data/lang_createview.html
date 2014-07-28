@@ -1,0 +1,43 @@
+<html><head><title>Query Language Understood by SQLite: CREATE VIEW</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>CREATE VIEW</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">sql-command</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">CREATE </font></b>[<b><font color="#2c2cf0">TEMP </font></b><big>|</big><b><font color="#2c2cf0"> TEMPORARY</font></b>]<b><font color="#2c2cf0"> VIEW </font></b>[<b><font color="#2c2cf0"></font></b><i><font color="#ff3434">database-name</font></i><b><font color="#2c2cf0"><big>.</big></font></b>]<b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">view-name</font></i><b><font color="#2c2cf0"> AS </font></b><i><font color="#ff3434">select-statement</font></i><b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+
+<p>The CREATE VIEW command assigns a name to a pre-packaged 
+<a href="lang_select.html">SELECT</a>
+statement.  Once the view is created, it can be used in the FROM clause
+of another SELECT in place of a table name.
+</p>
+
+<p>If the "TEMP" or "TEMPORARY" keyword occurs in between "CREATE"
+and "VIEW" then the view that is created is only visible to the
+process that opened the database and is automatically deleted when
+the database is closed.</p>
+
+<p> If a &lt;database-name&gt; is specified, then the view is created in 
+the named database. It is an error to specify both a &lt;database-name&gt;
+and the TEMP keyword, unless the &lt;database-name&gt; is "temp". If no
+database name is specified, and the TEMP keyword is not present,
+the table is created in the main database.</p>
+
+<p>You cannot COPY, DELETE, INSERT or UPDATE a view.  Views are read-only 
+in SQLite.  However, in many cases you can use a <a href="lang_createtrigger.html">
+TRIGGER</a> on the view to accomplish the same thing.  Views are removed 
+with the <a href="lang_dropview.html">DROP VIEW</a> 
+command.</p>
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

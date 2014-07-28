@@ -1,0 +1,47 @@
+<html><body><font size=-1>
+As I've mentioned a couple of times, DELETE FROM is a rather dangerous command. It deletes rows from a table.<br>
+<br>
+The syntax for the command is:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>DELETE FROM tablename WHERE conditions</font></td></tr></table><br>
+<br>
+If the 'WHERE' part is left out, all rows of the table will be deleted! This is useful for our hilights table, but otherwise the result is not very desirable.<br>
+<br>
+There is an 'undo' mechanism in SQL, however, in the form of transactions. Transactions work as bookmarks - if you start a transaction, do some stuff, and then get second thoughts about what you were doing, you can roll back the database state to where you started the transaction. (SQLite supports multiple transactions, but nested transactions must be created with SAVEPOINT and RELEASE, which is beyond the scope of this tutorial).<br>
+<br>
+Thus, you can try things such as:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>BEGIN; DELETE FROM stars WHERE x&gt;0 AND y&gt;0; INSERT INTO hilight SELECT starid FROM stars WHERE ((x-0.5)*(x-0.5) + (y+0.5)*(y+0.5)) &lt; 0.02</font><br>
+<font size=-2>(<a href="BEGIN; DELETE FROM stars WHERE x>0 AND y>0; INSERT INTO hilight SELECT starid FROM stars WHERE ((x-0.5)*(x-0.5) + (y+0.5)*(y+0.5)) < 0.02">Try it!</a>)</font></td></tr></table><br>
+<br>
+..to turn the galaxy into a pac-man.<br>
+<br>
+You can enter multiple queries at once in SQLite if you separate the commands with a semicolon; this may also work on other database engines.<br>
+<br>
+To undo the changes, execute:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>ROLLBACK</font></td></tr></table><br>
+<br>
+If you wish to make your changes permanent, execute:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>COMMIT</font></td></tr></table><br>
+<br>
+or<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>END</font></td></tr></table><br>
+<br>
+Both of the above end the transaction, after which rolling back is not possible, under SQLite, at least. The behaviour may be different under other database engines.<br>
+<br>
+Apart from acting as handy undo buffers, transactions can also be used to speed up large database operations. GalaXQL's galaxy rebuilding, for instance, is a single transaction. If it weren't, it would take ages.<br>
+<br>
+Note that if you manage to destroy the galaxy, you can always rebuild it under the 'File' menu. The same does not apply to most databases, however, so be very, <i>very</i> careful with the DELETE FROM command.<br>
+<br>
+Databases also tend to have connections (relations) between pages, and simply deleting data from one table may leave orphaned data in the database. We'll look deeper into this problem, and solutions, in later chapters (namely in 19. Triggers).<br>
+<br>
+<b>Kill off all stars</b> with starid lower than 10000. Do this inside a transaction, so that when I run the ROLLBACK command, we're back with the original galaxy.<br>
+</font></body></html>

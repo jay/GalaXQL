@@ -1,0 +1,146 @@
+===================================================================
+This file contains possible solutions to each lesson.
+
+It is meant to be a testing tool, so that the tester
+can quickly go through the lessons and confirm that
+each one still works.
+
+===================================================================
+Lesson 2:
+
+SELECT 24*60*60
+===================================================================
+Lesson 3:
+
+SELECT x, y, z FROM stars
+===================================================================
+Lesson 4:
+
+SELECT starid, x, y, z FROM stars WHERE x>0 AND starid<100 ORDER BY y
+===================================================================
+Lesson 5:
+
+SELECT SUM(y/x) FROM stars
+===================================================================
+Lesson 6:
+
+DELETE FROM hilight;
+INSERT INTO hilight
+  SELECT starid FROM stars
+  WHERE 5000 < starid AND starid < 15000 AND class=7
+  LIMIT 5;
+===================================================================
+Lesson 7:
+
+DELETE FROM hilight;
+INSERT INTO hilight 
+  SELECT starid FROM stars
+  WHERE 10000 < starid AND starid < 11000
+===================================================================
+Lesson 8:
+
+BEGIN;
+DELETE FROM stars WHERE starid < 10000
+===================================================================
+Lesson 9:
+
+UPDATE stars SET x=z,z=x WHERE 10000 < starid AND starid < 15000
+==================================================================
+Lesson 10:
+
+DELETE FROM hilight;
+INSERT INTO hilight
+  SELECT DISTINCT starid
+  FROM 
+   (SELECT DISTINCT starid, planetid AS ppid FROM planets WHERE planets.starid >= 20000),
+   (SELECT DISTINCT moons.planetid AS mpid FROM moons WHERE moons.orbitdistance >= 3000)
+   ON ppid = mpid
+==================================================================
+Lesson 11:
+
+DELETE FROM hilight;
+INSERT INTO hilight
+  SELECT starid FROM planets, 
+    (SELECT MAX(planets.orbitdistance) AS max_orbit_distance FROM planets)
+    ON planets.orbitdistance = max_orbit_distance
+==================================================================
+Lesson 12:
+
+SELECT
+     stars.name AS starname,
+     (stars.class+7)*stars.intensity*1000000 AS startemp,
+     planets.name AS planetname,
+     (stars.class+7)*stars.intensity*1000000-50*planets.orbitdistance AS planettemp
+  FROM stars LEFT OUTER JOIN planets    
+    ON stars.starid = planets.starid
+    WHERE stars.starid < 100
+==================================================================
+Lesson 13:
+
+CREATE VIEW numbers AS SELECT 3 AS numbers, intensity, x FROM stars;
+==================================================================
+Lesson 14:
+
+CREATE TABLE colors (color integer, description text);
+INSERT INTO colors
+  SELECT class, 'anything' as description
+  FROM stars
+  GROUP BY class;
+==================================================================
+Lesson 15:
+
+CREATE TABLE quotes (id INTEGER PRIMARY KEY, quote TEXT NOT NULL);
+INSERT INTO quotes VALUES (1, "quote");
+==================================================================
+Lesson 16:
+
+ALTER TABLE alter_test RENAME TO my_table;
+ALTER TABLE my_table ADD COLUMN moredata TEXT;
+UPDATE my_table SET moredata='abc';
+==================================================================
+Lesson 17:
+
+DELETE FROM hilight;
+INSERT INTO hilight
+  SELECT starid FROM
+    (SELECT
+         starid,
+         COUNT(planetid) AS total_planets
+       FROM planets
+       GROUP BY starid)
+    LEFT OUTER JOIN
+      (SELECT
+          planets.starid AS planets_starid,
+          SUM(total_moons) AS total_moons
+        FROM planets,
+          (SELECT
+              moons.planetid AS moons_planetid,
+              COUNT(moons.moonid) AS total_moons
+            FROM planets, moons 
+            WHERE moons.planetid=planets.planetid
+            GROUP BY moons.planetid)
+        WHERE planets.planetid = moons_planetid
+        GROUP BY planets.starid)
+    ON starid = planets_starid
+    ORDER BY total_planets+COALESCE(total_moons,0) DESC, starid ASC
+  LIMIT 1
+==================================================================
+Lesson 18:
+
+SELECT starid from planets
+  INTERSECT SELECT starid*3 AS x FROM planets
+  EXCEPT SELECT starid*2 AS x FROM planets
+==================================================================
+Lesson 19:
+
+CREATE TRIGGER newstar AFTER INSERT ON stars
+FOR EACH ROW BEGIN
+  DELETE FROM hilight;
+  INSERT INTO hilight VALUES (NEW.starid);
+END
+
+==================================================================
+Lesson 20:
+
+ALTER TABLE gateway RENAME TO gateways
+==================================================================

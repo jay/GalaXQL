@@ -1,0 +1,41 @@
+<html><body><font size=-1>
+Let's look at couple of SELECT operations we haven't covered yet, namely GROUP BY and HAVING.<br>
+<br>
+The syntax for these operations looks like this:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT columns FROM table GROUP BY column HAVING expression</font>
+</td></tr></table><br>
+<br>
+The GROUP BY command in a SELECT causes several output rows to be combined into a single row. This can be very useful if, for example, we wish to generate new statistical data as a table.<br>
+<br>
+For example, to find out the highest intensities from stars for each class, we would do:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>Select Class, Max(Intensity) As Brightness From Stars Group By Class Order By Brightness Desc</font><br>
+<font size=-2>(<a href="SELECT class, MAX(intensity) AS brightness FROM stars GROUP BY class ORDER BY brightness DESC">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+The HAVING operator works pretty much the same way as WHERE, except that it is applied after the grouping has been done. Thus, we could calculate the sum of intensities per class, and omit the classes where the sum is greater than, say, 150.<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT class, SUM(intensity) AS brightness FROM stars GROUP BY class HAVING brightness &lt;= 150 ORDER BY brightness DESC</font><br>
+<font size=-2>(<a href="SELECT class, SUM(intensity) AS brightness FROM stars GROUP BY class HAVING brightness <= 150 ORDER BY brightness DESC">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+We can refer to columns that are not selected in the HAVING clause.  We can also use aggregate functions in the HAVING clause.  Therefore, we could rewrite the query above as:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT class FROM stars GROUP BY class HAVING SUM(intensity) &lt;= 150 ORDER BY SUM(intensity) DESC</font><br>
+<font size=-2>(<a href="SELECT class, SUM(intensity) AS brightness FROM stars GROUP BY class HAVING brightness <= 150 ORDER BY brightness DESC">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+When combined with joins, GROUP BY becomes rather handy. To find out the number of planets per star, we can do:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT stars.starid AS starid, COUNT(planets.planetid) AS planet_count FROM stars LEFT OUTER JOIN planets ON stars.starid=planets.starid GROUP BY stars.starid</font><br>
+<font size=-2>(<a href="SELECT stars.starid AS starid, COUNT(planets.planetid) AS planet_count FROM stars LEFT OUTER JOIN planets ON stars.starid=planets.starid GROUP BY stars.starid">Try it!</a>)</font>
+</td></tr></table><br>
+<br>
+<b>Hilight the star</b> with the most orbitals (combined planets and moons).  If multiple stars have the highest number of orbitals, highlight the one with the lowest star id.
+</font></body></html>

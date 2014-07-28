@@ -1,0 +1,41 @@
+<html><head><title>Query Language Understood by SQLite: comment</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>comment</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">comment</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0"></font></b><i><font color="#ff3434">SQL-comment</font></i><b><font color="#2c2cf0"> </font></b><big>|</big><b><font color="#2c2cf0"> </font></b><i><font color="#ff3434">C-comment</font></i><b><font color="#2c2cf0"></font></b></td></tr>
+<tr><td align="right" valign="top">
+<i><font color="#ff3434">SQL-comment</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">-- </font></b><i><font color="#ff3434">single-line</font></i><b><font color="#2c2cf0"></font></b></td></tr>
+<tr><td align="right" valign="top">
+<i><font color="#ff3434">C-comment</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">/<big>*</big> </font></b><i><font color="#ff3434">multiple-lines</font></i><b><font color="#2c2cf0"> </font></b>[<b><font color="#2c2cf0"><big>*</big>/</font></b>]<b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+
+<p> Comments aren't SQL commands, but can occur in SQL queries. They are 
+treated as whitespace by the parser.  They can begin anywhere whitespace 
+can be found, including inside expressions that span multiple lines.
+</p>
+
+<p> SQL comments only extend to the end of the current line.</p>
+
+<p> C comments can span any number of lines.  If there is no terminating
+delimiter, they extend to the end of the input.  This is not treated as
+an error.  A new SQL statement can begin on a line after a multiline
+comment ends.  C comments can be embedded anywhere whitespace can occur,
+including inside expressions, and in the middle of other SQL statements.
+C comments do not nest.  SQL comments inside a C comment will be ignored.
+</p>
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

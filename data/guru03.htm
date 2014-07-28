@@ -1,0 +1,44 @@
+<html><body><font size=-1>The database consists of tables, which consist from columns and rows.<br>
+<br>
+Consider a spreadsheet..<br>
+<br>
+<table border=1>
+  <tr><td><b>Name</b></td><td><b>Loaned</b></td><td><b>Interest</b></td></tr>
+  <tr><td>Jack</td><td>$50</td><td>5% monthly</td></tr>
+  <tr><td>Tom</td><td>$25000</td><td>Arm and leg</td></tr>
+</table><br clear=all>
+<br>
+Here the 'Name', 'Loaned' and 'Interest' are columns, and Jack and Tom have their rows. If we call that table 'loans', we could ask for all of the above with:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT * FROM loans</font><br>
+<font size=-2>(<a href="SELECT * FROM loans">Try it!</a>)</font></td></tr></table>
+<br>
+If you tried the above, you probably received an error that there's no 'loans' table. Since we're playing with a galaxy here, and not some boring financial database, we play with stars, planets and moons. Try the following instead:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT * FROM stars</font><br>
+<font size=-2>(<a href="SELECT * FROM stars">Try it!</a>)</font></td></tr></table>
+<br>
+This kind of command typically results in lots and lots of data. Looking at the query, note the * - it's SQL-ish for "all columns". If we wanted only some of the columns, or wanted the columns in some specific order, we would list only the wanted columns here. For example:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT name, class FROM stars</font><br>
+<font size=-2>(<a href="SELECT name, class FROM stars">Try it!</a>)</font></td></tr></table>
+<br>
+You can also give new aliases for the columns:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT name, class AS starcolor FROM stars</font><br>
+<font size=-2>(<a href="SELECT name, class AS starcolor FROM stars">Try it!</a>)</font></td></tr></table>
+<br>
+This comes very handy when you, for instance, use some of the arithmetic operations we played with earlier:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT name, ((class+7)*intensity)*1000000 AS temperature FROM stars</font><br>
+<font size=-2>(<a href="SELECT name, ((class+7)*intensity)*1000000 AS temperature FROM stars">Try it!</a>)</font></td></tr></table>
+<br>
+(Note: These values have nothing to do with reality; all the data in our galaxy is purely fictional).<br>
+<br>
+<b>Let's see</b> if you can build a query now. Get x, y and z information from all the rows from the table 'stars'.<br>
+</font></body></html>

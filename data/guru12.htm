@@ -1,0 +1,54 @@
+<html><body><font size=-1>
+We've seen how it is useful to join several tables into one. There's more to joining than we've used so far; the more advanced 'join' syntax goes like this:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT columns FROM table1 JOIN table2 ON conditions</font></td></tr></table><br>
+<br>
+There are several kinds of JOIN commands. There are INNER JOINs, CROSS JOINs, and LEFT, RIGHT and FULL OUTER JOINs. Other kinds also exist, but the support for different kinds of join operations varies, but the basic INNER JOIN and LEFT OUTER JOIN are usually supported.<br>
+<br>
+Starting from the easy bits, you've already done INNER JOINs.<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT stars.name FROM stars, planets WHERE stars.starid=planets.starid</font><br>
+<font size=-2>(<a href="SELECT stars.name FROM stars, planets WHERE stars.starid=planets.starid">Try it!</a>)</font></td></tr></table><br>
+<br>
+..is roughly equivalent to..<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT stars.name FROM stars JOIN planets ON stars.starid=planets.starid</font><br>
+<font size=-2>(<a href="SELECT stars.name FROM stars JOIN planets ON stars.starid=planets.starid">Try it!</a>)</font></td></tr></table><br>
+<br>
+There may be some performance difference on some database engines, but basically, the above do the exact same thing.<br>
+<br>
+A NATURAL JOIN is like a JOIN with an implicit ON clause that joins all columns with the same name in both tables when they have the same data.  This may sound like it's exactly what you want, but it works poorly in practice and is shunned by database experts.  As an example, you might think you could simplify the above query to:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT stars.name FROM stars NATURAL JOIN planets</font><br>
+<font size=-2>(<a href="SELECT stars.name FROM stars NATURAL JOIN planets">Try it!</a>)</font></td></tr></table><br>
+<br>
+as both stars and planets are joined with starid, but this query returns no results because stars and planets all have different names.  But if the planets table didn't have a "name" column, it would work fine...until someone later added it (or an x, y, z, class, or intensity column, most of which make sense for planets), at which point your query would suddenly stop working.  This is a good reason to avoid using NATURAL JOIN.  In fact, I only mentioned NATURAL JOIN to tell you not to use it.<br>
+<br>
+Anyway, JOIN without any extra specifiers gives you INNER JOIN. CROSS JOIN is the same as SELECT without a WHERE clause. Many database engines consider CROSS JOIN and INNER JOIN to be the same thing, allowing the ON clause (or lack thereof) on both.<br>
+<br>
+OUTER JOINs are, however, a different case. In LEFT OUTER JOIN, you select all rows from the first (leftmost) table, padded with the information from the second table, assuming anything is available. If not, NULLs are added.<br>
+<br>
+The effect is easiest to understand by looking at an example:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color="blue">SELECT stars.name AS sn, planets.name AS pn FROM stars LEFT OUTER JOIN planets ON stars.starid=planets.starid</font><br>
+<font size=-2>(<a href="SELECT stars.name AS sn, planets.name AS pn FROM stars LEFT OUTER JOIN planets ON stars.starid=planets.starid">Try it!</a>)</font></td></tr></table><br>
+<br>
+This query lists all the star and planet names, with one row reading star name and planet name. If a star has no planets, the planet name reads NULL. If a star has several planets, the star name is duplicated for each planet.<br>
+<br>
+We can expand that by also joining in the moon names:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color="blue">SELECT stars.name AS sn, planets.name, moons.name as mn AS pn FROM stars LEFT OUTER JOIN planets ON stars.starid=planets.starid LEFT OUTER JOIN moons ON planets.planetid=moons.planetid</font><br>
+<font size=-2>(<a href="SELECT stars.name AS sn, planets.name AS pn, moons.name as mn FROM stars LEFT OUTER JOIN planets ON stars.starid=planets.starid LEFT OUTER JOIN moons ON planets.planetid=moons.planetid">Try it!</a>)</font></td></tr></table><br>
+<br>
+..and so on.<br>
+<br>
+RIGHT OUTER JOIN would do the same thing, but this time the full selection would be done for the rightmost table, and FULL OUTER JOIN would select all rows from both tables, merging them with NULLs where applicable. SQLite does not support RIGHT or FULL OUTER JOINs, though.<br>
+<br>
+<b>Generate a list of stars</b> with star ids below 100 with columns "starname", "startemp", "planetname", and "planettemp". The list should have all stars, with the unknown data filled out with NULL. These values are, as usual, fictional. Calculate the temperature for a star with ((class+7)*intensity)*1000000, and a planet's temperature is calculated from the star's temperature minus 50 times orbit distance.
+</font></body></html>

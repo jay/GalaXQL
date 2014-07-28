@@ -1,0 +1,47 @@
+<html><body><font size=-1>
+If you scroll to the bottom of the query results window after a "SELECT * FROM stars" query, you'll find that the query results were truncated as too many rows were returned.<br>
+<br>
+GalaXQL was written so that only the first 1000 rows are returned; the database would happily return couple million rows if we wanted, but 1000 rows are more than enough for our purposes (and this application is slow enough as is).<br>
+<br>
+Anyway, let's say you wanted information about star number 2348. This is fairly easy to do:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT * FROM stars WHERE starid=2348</font><br>
+<font size=-2>(<a href="SELECT * FROM stars WHERE starid=2348">Try it!</a>)</font></td></tr></table>
+<br>
+This query returns only one row, which happens to be the star we wanted information about.<br>
+<br>
+There's more you can do with WHERE. Let's say we want to know about stars with star id that's greater than 1000 but less than 2000 and which have class of 0:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT * FROM stars WHERE starid&gt;1000 AND starid&lt;2000 AND class=0</font><br>
+<font size=-2>(<a href="SELECT * FROM stars WHERE starid>1000 AND starid<2000 AND class=0">Try it!</a>)</font></td></tr></table>
+<br>
+That should return less than 100 rows. Apart from AND, SQL also understands OR, so you could ask for all stars with class 0 or class 1, for instance. If you want everything but a single value, you could either use the not-equals (&lt;&gt;) or the logical NOT (foo&lt;&gt;3 or NOT (foo=3)).<br>
+<br>
+(Here, again, the supported operators vary from one database engine to another).<br>
+<br>
+You can also ask for the rows in sorted order. Let's sort the above results by the intensity:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT * FROM stars WHERE starid&gt;1000 AND starid&lt;2000 AND class=0 ORDER BY intensity</font><br>
+<font size=-2>(<a href="SELECT * FROM stars WHERE starid>1000 AND starid<2000 AND class=0 ORDER BY intensity">Try it!</a>)</font></td></tr></table>
+<br>
+If we wanted the brightest stars first, we'd add DESC (for DESCending) to the query, like this:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT * FROM stars WHERE starid&gt;1000 AND starid&lt;2000 AND class=0 ORDER BY intensity DESC</font><br>
+<font size=-2>(<a href="SELECT * FROM stars WHERE starid>1000 AND starid<2000 AND class=0 ORDER BY intensity DESC">Try it!</a>)</font></td></tr></table>
+<br>
+There's also ASC (for ASCending), but that's typically the default.<br>
+<br>
+We also can give ORDER BY multiple columns, which tells the database engine to order the rows by values in a second column when the values in the first column are equal. As a contrived example, suppose we wanted to list the brightest stars and, in the case of equally bright stars, order by their position on the Z-axis:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT * FROM stars WHERE starid&gt;1000 AND starid&lt;2000 AND class=0 ORDER BY intensity DESC, z</font><br>
+<font size=-2>(<a href="SELECT * FROM stars WHERE starid>1000 AND starid<2000 AND class=0 ORDER BY intensity DESC, z">Try it!</a>)</font></td></tr></table>
+<br>
+Note that if we drop the WHERE clause from above (<font color=blue>SELECT * FROM stars ORDER BY intensity DESC, z</font>), the database will have to sort all of the rows in the database, which will take considerably longer.<br>
+<br>
+<b>Okay. Time for you to try something out.</b> Make a query which returns starid, x, y and z for all stars where x is greater than zero and starid is less than one hundred. Sort the results by the y-coordinate so that the smallest values come first.<br>
+</font></body></html>

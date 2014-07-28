@@ -1,0 +1,88 @@
+<html><head><title>Query Language Understood by SQLite: ON CONFLICT clause</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<a href="index.htm">back to index</a>
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>ON CONFLICT clause</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">conflict-clause</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">ON CONFLICT </font></b><i><font color="#ff3434">conflict-algorithm</font></i><b><font color="#2c2cf0"></font></b></td></tr>
+<tr><td align="right" valign="top">
+<i><font color="#ff3434">conflict-algorithm</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">ROLLBACK </font></b><big>|</big><b><font color="#2c2cf0"> ABORT </font></b><big>|</big><b><font color="#2c2cf0"> FAIL </font></b><big>|</big><b><font color="#2c2cf0"> IGNORE </font></b><big>|</big><b><font color="#2c2cf0"> REPLACE</font></b></td></tr>
+</tbody></table>
+
+<p>The ON CONFLICT clause is not a separate SQL command.  It is a
+non-standard clause that can appear in many other SQL commands.
+It is given its own section in this document because it is not
+part of standard SQL and therefore might not be familiar.</p>
+
+<p>The syntax for the ON CONFLICT clause is as shown above for
+the CREATE TABLE and CREATE INDEX commands.  For the COPY, INSERT, and
+UPDATE commands, the keywords "ON CONFLICT" are replaced by "OR", to make
+the syntax seem more natural.  But the meaning of the clause is the same
+either way.</p>
+
+<p>The ON CONFLICT clause specifies an algorithm used to resolve
+constraint conflicts.  There are five choices: ROLLBACK, ABORT,
+FAIL, IGNORE, and REPLACE. The default algorithm is ABORT.  This
+is what they mean:</p>
+
+<dl>
+<dt><b>ROLLBACK</b></dt>
+<dd><p>When a constraint violation occurs, an immediate ROLLBACK
+occurs, thus ending the current transaction, and the command aborts
+with a return code of SQLITE_CONSTRAINT.  If no transaction is
+active (other than the implied transaction that is created on every
+command) then this algorithm works the same as ABORT.</p></dd>
+
+<dt><b>ABORT</b></dt>
+<dd><p>When a constraint violation occurs, the command backs out
+any prior changes it might have made and aborts with a return code
+of SQLITE_CONSTRAINT.  But no ROLLBACK is executed so changes
+from prior commands within the same transaction
+are preserved.  This is the default behavior.</p></dd>
+
+<dt><b>FAIL</b></dt>
+<dd><p>When a constraint violation occurs, the command aborts with a
+return code SQLITE_CONSTRAINT.  But any changes to the database that
+the command made prior to encountering the constraint violation
+are preserved and are not backed out.  For example, if an UPDATE
+statement encountered a constraint violation on the 100th row that
+it attempts to update, then the first 99 row changes are preserved
+but changes to rows 100 and beyond never occur.</p></dd>
+
+<dt><b>IGNORE</b></dt>
+<dd><p>When a constraint violation occurs, the one row that contains
+the constraint violation is not inserted or changed.  But the command
+continues executing normally.  Other rows before and after the row that
+contained the constraint violation continue to be inserted or updated
+normally.  No error is returned.</p></dd>
+
+<dt><b>REPLACE</b></dt>
+<dd><p>When a UNIQUE constraint violation occurs, the pre-existing rows
+that are causing the constraint violation are removed prior to inserting
+or updating the current row.  Thus the insert or update always occurs.
+The command continues executing normally.  No error is returned.
+If a NOT NULL constraint violation occurs, the NULL value is replaced
+by the default value for that column.  If the column has no default
+value, then the ABORT algorithm is used.</p>
+
+<p>When this conflict resolution strategy deletes rows in order to
+satisfy a constraint, it does not invoke delete triggers on those
+rows.  But that may change in a future release.</p>
+</dd></dl>
+
+<p>The algorithm specified in the OR clause of a COPY, INSERT, or UPDATE
+overrides any algorithm specified in a CREATE TABLE or CREATE INDEX.
+If no algorithm is specified anywhere, the ABORT algorithm is used.</p>
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<a href="index.htm">back to index</a>
+</body></html>

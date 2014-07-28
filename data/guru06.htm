@@ -1,0 +1,34 @@
+<html><body><font size=-1>
+As I mentioned in the beginning, SQL is used for more than just queries.<br> 
+<br>
+So far we've only queried information from the database. We're far from done with the SELECT command, but let's look briefly at how we can add data into the database.<br>
+<br>
+Data is inserted into a table using the INSERT INTO command.<br>
+<br>
+GalaXQL has a simple table called 'hilight' which can be used to hilight stars. In addition to being brighter in the star map, the hilighted star with the lowest starid is also magnified, so you can see any planets and moons that the system has.<br>
+<br>
+The hilight table only has one column - starid. The column also has 'unique' restriction on it, and thus if you try to insert a value into the table that it already has, you'll get an error.<br>
+<br>
+The format for the INSERT INTO command is as follows:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>INSERT INTO tablename (column names) VALUES (values for the columns)</font></td></tr></table><br>
+<br>
+If all columns are filled, the (column names) can be dropped. So, what happens if you're not filling all the columns? The remaining ones are set to NULL. We won't have to worry about that yet, though. Try this one:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>INSERT INTO hilight VALUES (12340)</font><br>
+<font size=-2>(<a href="INSERT INTO hilight VALUES (12340)">Try it!</a>)</font></td></tr></table><br>
+<br>
+After that command you should see one brigher spot on the galaxy map about halfway between the center and the edge. You should also see the zoomed system display, and if you're lucky, the system will also have some planets and moons in it.<br>
+<br>
+You can remove all the hilights with the command:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>DELETE FROM hilight</font><br>
+<font size=-2>(<a href="DELETE FROM hilight">Try it!</a>)</font></td></tr></table><br>
+<br>
+Note that this is a very dangerous command; only use it on the hilight table for now. We'll look more into DELETE FROM later on. (If you manage to destroy the galaxy by accident - and hey, accidents do happen - you can always regenerate it from the File menu -&gt; Radical operations -&gt; Regenerate database (25k)).<br>
+<br>
+<b>Hilight five stars</b> which have star id between 5000 and 15000, and have class 7. (Hint: don't try to do this with a single query at this point).
+</font></body></html>

@@ -1,0 +1,34 @@
+<html><body><font size=-1>
+Now that we've learned to slice the database in several ways, let's look at some of the
+statistics functions supported by SQL.<br>
+<br>
+To count the stars, try:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT COUNT() FROM stars</font><br>
+<font size=-2>(<a href="SELECT COUNT() FROM stars">Try it!</a>)</font></td></tr></table>
+<br>
+Real-world galaxies have billions of stars, but we'll have to do with a couple thousand.<br>
+<br>
+Other functions typically supported are MAX (return maximum value), MIN (return minimum value), AVG (calculate average value) and SUM (calculate the sum of the values). For instance, to find the maximum x value, you could try:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT MAX(x) FROM stars</font><br>
+<font size=-2>(<a href="SELECT MAX(x) FROM stars">Try it!</a>)</font></td></tr></table>
+<br>
+The parameter for the functions can be a column name, or an equation with column names. For instance, to calculate the average distance from the galaxy center, you could do:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>SELECT AVG(x*x+y*y+z*z) FROM stars</font><br>
+<font size=-2>(<a href="SELECT AVG(x*x+y*y+z*z) FROM stars">Try it!</a>)</font></td></tr></table>
+<br>
+(Well, that's actually average of the distance <i>squared</i>, as SQL does not include a square root..)<br>
+<br>
+The COUNT function also takes in a parameter. NULL values are not counted. Oh, I haven't talked about NULL values yet, have I?<br>
+<br>
+NULL is a special value in SQL, which means that there is no value. It's different from empty strings or zero integers. NULL values may pop up naturally in databases, and they can also appear in complicated queries in some circumstances. We'll be seeing lots of them later on.<br>
+<br>
+NULL values are also handled a bit differently. If you wish to select all rows where some value is not null, you write <font color=blue>foo IS NOT NULL</font>. Also, any arithmetic operation with NULL results in NULL; 2*7+NULL=NULL.  If you want to treat the NULL value as something else, perhaps 0, you can use the COALESCE function, which returns its first non-NULL argument.  For example, 2*7+COALESCE(NULL,0)=14.<br>
+<br>
+<b>Build a query</b> where you calculate the sum of all y values divided by all x values.<br>
+</font></body></html>

@@ -1,0 +1,18 @@
+<html><body><font size=-1>
+You can use SQL to copy information from one table to another, either directly or by modifying it on the way. The command syntax is:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>INSERT INTO tablename (column names) SELECT ..</font></td></tr></table>
+<br>
+Where the SELECT bit is a full-blown SELECT query which should return the proper columns. If all columns of the target table are filled, the (column names) can be dropped. (Like before, if we're not filling all the values in the target table, the columns are most likely set to NULL).<br>
+<br>
+Now we're starting to have pretty powerful commands in our hands. To hilight half the galaxy, all you need to do is:<br>
+<br>
+<table border=0 width=100% bgcolor=#f0f0f0><tr><td>
+<font color=blue>INSERT INTO hilight SELECT starid FROM stars WHERE x &gt; 0</font><br>
+<font size=-2>(<a href="INSERT INTO hilight SELECT starid FROM stars WHERE x > 0">Try it!</a>)</font></td></tr></table>
+<br>
+If you try that and get an error stating that starid is not unique, the reason is that you probably already have some hilighted stars. Running the dangerous <font color=blue>DELETE FROM hilight</font> before the above will fix that problem.<br>
+<br>
+<b>Hilight all the stars</b> with starid between 10000 and 11000. (I know, this is not too difficult, but it looks neat).<br>
+</font></body></html>

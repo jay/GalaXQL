@@ -1,0 +1,49 @@
+<html><head><title>Query Language Understood by SQLite: VACUUM</title></head><body bgcolor="white" link="#50695f" vlink="#508896">
+<h1>SQL As Understood By SQLite</h1>
+<a href="lang.html">[Contents]</a>
+<h2>VACUUM</h2>
+<table cellpadding="10">
+<tbody><tr><td align="right" valign="top">
+<i><font color="#ff3434">sql-statement</font></i>&nbsp;::=</td>
+<td><b><font color="#2c2cf0">VACUUM </font></b>[<b><font color="#2c2cf0"></font></b><i><font color="#ff3434">index-or-table-name</font></i><b><font color="#2c2cf0"></font></b>]<b><font color="#2c2cf0"></font></b></td></tr>
+</tbody></table>
+
+<p>The VACUUM command is an SQLite extension modeled after a similar
+command found in PostgreSQL.  If VACUUM is invoked with the name of a
+table or index then it is suppose to clean up the named table or index.
+In version 1.0 of SQLite, the VACUUM command would invoke 
+<b>gdbm_reorganize()</b> to clean up the backend database file.</p>
+
+<p>
+VACUUM became a no-op when the GDBM backend was removed from
+SQLITE in version 2.0.0.
+VACUUM was reimplemented in version 2.8.1.
+The index or table name argument is now ignored.
+</p>
+
+<p>When an object (table, index, or trigger) is dropped from the 
+database, it leaves behind empty space.  This makes the database 
+file larger than it needs to be, but can speed up inserts.  In time 
+inserts and deletes can leave the database file structure fragmented, 
+which slows down disk access to the database contents.
+
+The VACUUM command cleans
+the main database by copying its contents to a temporary database file and 
+reloading the original database file from the copy.  This eliminates 
+free pages,  aligns table data to be contiguous, and otherwise cleans 
+up the database file structure. It is not possible to perform the same
+process on an attached database file.</p>
+
+<p>This command will fail if there is an active transaction.  This 
+command has no effect on an in-memory database.</p>
+
+<p>As of SQLite version 3.1, an alternative to using the VACUUM command
+is auto-vacuum mode, enabled using the 
+<a href="pragma.html#pragma_auto_vacuum">auto_vacuum pragma</a>.</p>
+
+
+<table width="100%">
+<tbody><tr><td bgcolor="#80a796"></td></tr>
+</tbody></table>
+<small><i>This page last modified on 2005/09/11 11:56:28</i></small>
+</body></html>
