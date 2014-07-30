@@ -38,12 +38,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-#if defined(__GNUG__) && !defined(__APPLE__)
-#pragma implementation "galaxql.h"
-#endif
-
-#define MAX_STARS (32*1024)
-
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -54,6 +48,16 @@
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
+
+#ifdef _DEBUG
+#include <iostream>
+#endif
+
+#if defined(__GNUG__) && !defined(__APPLE__)
+#pragma implementation "galaxql.h"
+#endif
+
+#define MAX_STARS (32*1024)
 
 #include "wx/glcanvas.h"
 #include "wx/splitter.h"
@@ -83,10 +87,6 @@
 
 #include "galaxql.h"
 #include "sqlqueryctrl.h"
-
-wxStopWatch ticker;
-
-#define TICK ticker.Time()
 
 const int starcolors[]= // Hagen numbers
 {
@@ -190,8 +190,7 @@ bool GalaxqlApp::OnInit()
     // executable is in.  In the event that GalaXQL was launched from a different
     // directory, we must switch to the executable's directory or else GalaXQL
     // will crash when it cannot load a resource.
-    wxStandardPaths paths;
-    wxFileName executableFileName(paths.GetExecutablePath());
+    wxFileName executableFileName(wxStandardPaths::Get().GetExecutablePath());
     wxSetWorkingDirectory(executableFileName.GetPath(wxPATH_GET_VOLUME));
 #endif
 
@@ -210,7 +209,7 @@ bool GalaxqlApp::OnInit()
     bool regen_needed = true;
     FILE * testf;
     testf = fopen("galaxql.db","rb");
-    if (testf != NULL)
+    if (testf != NULL && fgetc(testf) != EOF)
     {
         // exists, close up and that's it
         fclose(testf);
@@ -248,6 +247,7 @@ bool GalaxqlApp::OnInit()
     if (regen_needed)
         mainWindow->RegenerateWorld(1);
 
+    mainWindow->Center();
     mainWindow->Show(true);
 
     return true;
@@ -382,19 +382,19 @@ bool Galaxql::Create( wxWindow* parent, wxWindowID id, const wxString& caption, 
     wxFileSystem *fs = new wxFileSystem();
     wxFSFile * f = fs->OpenFile(wxT("file:galaxql.dat#zip:sad.png"));
 
-    mGuruSad.LoadFile(*f->GetStream());
+    mGuruSad.LoadFile(*f->GetStream(), wxBITMAP_TYPE_PNG);
     delete f;
     f = fs->OpenFile(wxT("file:galaxql.dat#zip:happy.png"));
-    mGuruHappy.LoadFile(*f->GetStream());
+    mGuruHappy.LoadFile(*f->GetStream(), wxBITMAP_TYPE_PNG);
     delete f;
     f = fs->OpenFile(wxT("file:galaxql.dat#zip:normal.png"));
-    mGuruNormal.LoadFile(*f->GetStream());
+    mGuruNormal.LoadFile(*f->GetStream(), wxBITMAP_TYPE_PNG);
     delete f;
     f = fs->OpenFile(wxT("file:galaxql.dat#zip:baddb.png"));
-    mGuruBadDb.LoadFile(*f->GetStream());
+    mGuruBadDb.LoadFile(*f->GetStream(), wxBITMAP_TYPE_PNG);
     delete f;
     f = fs->OpenFile(wxT("file:galaxql.dat#zip:easter.png"));
-    mGuruEaster.LoadFile(*f->GetStream());
+    mGuruEaster.LoadFile(*f->GetStream(), wxBITMAP_TYPE_PNG);
     delete f;
         
     mGuruPicture->SetBitmap(mGuruNormal);
@@ -502,9 +502,9 @@ void Galaxql::CreateControls()
     itemPanel38->SetSizer(itemBoxSizer39);
 
     wxBoxSizer* itemBoxSizer40 = new wxBoxSizer(wxVERTICAL);
-    itemBoxSizer39->Add(itemBoxSizer40, 1, wxGROW|wxALL|wxADJUST_MINSIZE, 1);
+    itemBoxSizer39->Add(itemBoxSizer40, 1, wxGROW|wxALL, 1);
     mQuery = new SqlQueryCtrl( itemPanel38, ID_QUERYEDIT);
-    itemBoxSizer40->Add(mQuery, 1, wxGROW|wxALL|wxADJUST_MINSIZE, 1);
+    itemBoxSizer40->Add(mQuery, 1, wxGROW|wxALL, 1);
 
     wxBoxSizer* itemBoxSizer42 = new wxBoxSizer(wxHORIZONTAL);
     itemBoxSizer40->Add(itemBoxSizer42, 0, wxALIGN_RIGHT|wxALL, 5);
@@ -554,9 +554,9 @@ void Galaxql::CreateControls()
     itemPanel57->SetSizer(itemBoxSizer58);
 
     wxBoxSizer* itemBoxSizer59 = new wxBoxSizer(wxVERTICAL);
-    itemBoxSizer58->Add(itemBoxSizer59, 1, wxGROW|wxALL|wxADJUST_MINSIZE, 1);
+    itemBoxSizer58->Add(itemBoxSizer59, 1, wxGROW|wxALL, 1);
     wxStaticText* itemStaticText60 = new wxStaticText( itemPanel57, wxID_STATIC, _("Query Result"), wxDefaultPosition, wxDefaultSize, 0 );
-    itemBoxSizer59->Add(itemStaticText60, 0, wxALIGN_CENTER_HORIZONTAL|wxALL|wxADJUST_MINSIZE, 5);
+    itemBoxSizer59->Add(itemStaticText60, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
     mQueryResult = new wxHtmlWindow( itemPanel57, ID_QUERYRESULT, wxDefaultPosition, wxSize(200, 150), wxHW_SCROLLBAR_AUTO|wxSTATIC_BORDER|wxHSCROLL|wxVSCROLL );
     mQueryResult->SetBackgroundColour(wxColour(192, 192, 192));
@@ -643,7 +643,7 @@ END_EVENT_TABLE()
  */
 
 GfxPanel::GfxPanel(wxWindow *parent, int, wxPoint, wxSize, int)
-    : wxGLCanvas(parent, wxID_ANY, wxDefaultPosition),
+    : wxGLCanvas(parent),///
       xpos(0),
       ypos(0),
       mVtx(0),
@@ -704,7 +704,7 @@ void GfxPanel::render(float *vtx, float *col, int count)
 
     //glRotatef( 30, 1.0f, 0, 0);
 
-    float angle = TICK / 50000.0f;
+    float angle = mTicker.Time() / 50000.0f;
 
     glRotatef( -60,0,1,0);
     glRotatef( -20,1,0,0);
@@ -1033,7 +1033,7 @@ int sql_callback_gateways(void*userptr,int columns,char**values, char**names)
 // Renders the hilighted star system (star, planets, and moons) into the panel.
 void GfxPanel::render_system()
 {
-    float angle = (TICK / 5000.0f) + 1337;
+    float angle = (mTicker.Time() / 5000.0f) + 1337;
     int vtxcount = 1;
     vtxcount += mHilightInfo.planets;
     int i;
@@ -1161,7 +1161,7 @@ void GfxPanel::render_system()
 void GfxPanel::onPaint(wxPaintEvent &)
 {
     wxPaintDC dc(this);
-    SetCurrent();
+    SetCurrent(this);///
 
     GalaxqlApp * app = (GalaxqlApp*)wxTheApp;  
 
@@ -3012,7 +3012,7 @@ void Galaxql::OnLoadqueryClick( wxCommandEvent& WXUNUSED(event) )
         wxT(""), 
         wxT("query.txt"), 
         wxT("txt files (*.txt)|*.txt"), 
-        wxOPEN | wxFD_FILE_MUST_EXIST);
+        wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     if (fd.ShowModal() == wxID_OK)
     {
         // Open the file for reading.
@@ -3049,7 +3049,7 @@ void Galaxql::OnSavequeryClick( wxCommandEvent& WXUNUSED(event) )
         wxT(""), 
         wxT("query.txt"), 
         wxT("txt files (*.txt)|*.txt"), 
-        wxSAVE | wxOVERWRITE_PROMPT);
+        wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if (fd.ShowModal() == wxID_OK)
     {
         // open the file for writing
@@ -3190,7 +3190,7 @@ void wxGuruSpeaksPanel::CreateControls()
 ////@begin wxGuruSpeaksPanel content construction
     // Generated by DialogBlocks, 03/06/2006 15:22:22 (Personal Edition)
 
-    wxGuruSpeaksPanel* itemHtmlWindow54 = this;
+    //wxGuruSpeaksPanel* itemHtmlWindow54 = this;
 
 ////@end wxGuruSpeaksPanel content construction
 }

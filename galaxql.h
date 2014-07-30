@@ -48,7 +48,7 @@ class SqlQueryCtrl;
 ////@begin control identifiers
 #define ID_FRAME 10000
 #define SYMBOL_GALAXQL_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
-#define SYMBOL_GALAXQL_TITLE _("GalaXQL 2.1")
+#define SYMBOL_GALAXQL_TITLE _("GalaXQL 2.2-dev")
 #define SYMBOL_GALAXQL_IDNAME ID_FRAME
 #define SYMBOL_GALAXQL_SIZE wxSize(800, 600)
 #define SYMBOL_GALAXQL_POSITION wxDefaultPosition
@@ -309,6 +309,7 @@ public:
     void render_system() ;
     
 public:
+    wxStopWatch mTicker;
     float xpos, ypos;
     float *mCol, *mVtx, *mGatewayVtx;
     int mGateways;
