@@ -1,0 +1,12 @@
+Debug/
+Release/
+enc_temp_folder/
+ipch/
+old/
+private/
+*.old
+*.opensdf
+*.sdf
+*.suo
+*.user
+*.aps
