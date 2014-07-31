@@ -643,7 +643,7 @@ END_EVENT_TABLE()
  */
 
 GfxPanel::GfxPanel(wxWindow *parent, int, wxPoint, wxSize, int)
-    : wxGLCanvas(parent),///
+    : wxGLCanvas(parent),
       xpos(0),
       ypos(0),
       mVtx(0),
@@ -652,7 +652,8 @@ GfxPanel::GfxPanel(wxWindow *parent, int, wxPoint, wxSize, int)
       mStars(0),
       mRenderWithGlow(0),
       mRenderInLowQuality(0),
-      mRenderGrid(0)
+      mRenderGrid(0),
+      mContext(this)
 {
 }
 
@@ -1161,7 +1162,7 @@ void GfxPanel::render_system()
 void GfxPanel::onPaint(wxPaintEvent &)
 {
     wxPaintDC dc(this);
-    SetCurrent(this);///
+    SetCurrent(mContext);
 
     GalaxqlApp * app = (GalaxqlApp*)wxTheApp;  
 

@@ -321,6 +321,9 @@ public:
     int mRenderInLowQuality;
     int mRenderGrid;
 
+private:
+    wxGLContext mContext;
+
 ////@begin GfxPanel member variables
 ////@end GfxPanel member variables
 };
