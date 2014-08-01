@@ -49,8 +49,12 @@
 #include "wx/wx.h"
 #endif
 
-#ifdef _DEBUG
-#include <iostream>
+#if defined(_DEBUG) && defined(__WXMSW__)
+    #include "wx/msw/msvcrt.h"
+    #if !defined(_INC_CRTDBG) || !defined(_CRTDBG_MAP_ALLOC)
+        #error Debug CRT functions have not been included!
+    #endif
+    #include <iostream>
 #endif
 
 #if defined(__GNUG__) && !defined(__APPLE__)

@@ -48,6 +48,14 @@
 #include "wx/wx.h"
 #endif
 
+#if defined(_DEBUG) && defined(__WXMSW__)
+    #include "wx/msw/msvcrt.h"
+    #if !defined(_INC_CRTDBG) || !defined(_CRTDBG_MAP_ALLOC)
+        #error Debug CRT functions have not been included!
+    #endif
+    #include <iostream>
+#endif
+
 #include "sqlqueryctrl.h"
 
 #define COUNT_OF(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
