@@ -661,6 +661,13 @@ GfxPanel::GfxPanel(wxWindow *parent, int, wxPoint, wxSize, int)
 {
 }
 
+GfxPanel::~GfxPanel()
+{
+    delete[] mVtx;
+    delete[] mCol;
+    delete[] mGatewayVtx;
+}
+
 
 /*!
  * Should we show tooltips?

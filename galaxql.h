@@ -284,6 +284,9 @@ class GfxPanel: public wxGLCanvas
 public:
     /// Constructors
     GfxPanel( wxWindow* parent, int, wxPoint, wxSize, int);
+
+    // Destructor
+    ~GfxPanel();
     
 ////@begin GfxPanel event handler declarations
 
