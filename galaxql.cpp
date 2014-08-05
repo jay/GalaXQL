@@ -57,6 +57,8 @@
     #include <iostream>
 #endif
 
+#include <wx/clipbrd.h>
+
 #if defined(__GNUG__) && !defined(__APPLE__)
 #pragma implementation "galaxql.h"
 #endif
@@ -3159,6 +3161,9 @@ IMPLEMENT_DYNAMIC_CLASS( wxGuruSpeaksPanel, wxHtmlWindow )
 BEGIN_EVENT_TABLE( wxGuruSpeaksPanel, wxHtmlWindow )
 
 ////@begin wxGuruSpeaksPanel event table entries
+EVT_CONTEXT_MENU(wxGuruSpeaksPanel::OnContextMenu)
+EVT_MENU(MENU_CONTEXT_COPY, wxGuruSpeaksPanel::OnContextMenu_Copy)
+EVT_MENU(MENU_CONTEXT_SELECT_ALL, wxGuruSpeaksPanel::OnContextMenu_SelectAll)
 ////@end wxGuruSpeaksPanel event table entries
 
 END_EVENT_TABLE()
@@ -3250,6 +3255,36 @@ void wxGuruSpeaksPanel::OnLinkClicked(const wxHtmlLinkInfo& link)
     g->mQuery->SetFocus();
     
 }
+
+void wxGuruSpeaksPanel::OnContextMenu(wxContextMenuEvent &event)
+{
+    wxMenu menu;
+    menu.Append(MENU_CONTEXT_COPY, wxT("Copy"));
+    menu.Append(wxID_SEPARATOR);
+    menu.Append(MENU_CONTEXT_SELECT_ALL, wxT("Select All"));
+    PopupMenu(&menu, ScreenToClient(event.GetPosition()));
+    //wxMessageBox(wxT("Done"));
+}
+
+void wxGuruSpeaksPanel::OnContextMenu_Copy(wxCommandEvent &event)
+{
+    if(wxTheClipboard->Open())
+    {
+        wxTheClipboard->SetData(new wxTextDataObject(SelectionToText()));
+        wxTheClipboard->Close();
+    }
+    else
+    {
+        wxMessageBox( "Failed to copy to the clipboard.", "GalaXQL Error", wxICON_ERROR | wxCENTER );
+    }
+}
+
+void wxGuruSpeaksPanel::OnContextMenu_SelectAll(wxCommandEvent &event)
+{
+    SelectAll();
+}
+
+
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_MENULOWQUALITY
  */

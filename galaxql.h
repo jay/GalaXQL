@@ -94,6 +94,12 @@ class SqlQueryCtrl;
 #define ID_QUERYPANEL 10005
 #define ID_QUERYRESULT 10007
 #define ID_HTMLWINDOW 10020
+
+/* None of the above identifiers are in any order. Were they generated
+based on some template? I'm starting from 2xxxx to avoid conflict.
+*/
+#define MENU_CONTEXT_COPY 20001
+#define MENU_CONTEXT_SELECT_ALL 20002
 ////@end control identifiers
 
 /*!
@@ -387,6 +393,10 @@ public:
     virtual void OnLinkClicked(const wxHtmlLinkInfo& link);
 
 ////@begin wxGuruSpeaksPanel event handler declarations
+
+    void OnContextMenu(wxContextMenuEvent &event);
+    void OnContextMenu_Copy(wxCommandEvent &event);
+    void OnContextMenu_SelectAll(wxCommandEvent &event);
 
 ////@end wxGuruSpeaksPanel event handler declarations
 
