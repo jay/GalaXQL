@@ -649,7 +649,7 @@ END_EVENT_TABLE()
  */
 
 GfxPanel::GfxPanel(wxWindow *parent, int, wxPoint, wxSize, int)
-    : wxGLCanvas(parent),
+    : wxGLCanvas(parent, wxID_ANY, NULL),
       xpos(0),
       ypos(0),
       mVtx(0),
