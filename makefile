@@ -28,7 +28,7 @@ MAJOR=2
 MINOR=1
 
 sqlite-src    = sqlite3.c
-galaxql-src   = RegenerationDialog.cpp galaxql.cpp sqlqueryctrl.cpp
+galaxql-src   = Preferences.cpp RegenerationDialog.cpp galaxql.cpp sqlqueryctrl.cpp
 objs          = $(galaxql-src:.cpp=.o)   $(sqlite-src:.c=.o)   $(rcobj)
 objs-d        = $(galaxql-src:.cpp=-d.o) $(sqlite-src:.c=-d.o) $(rcobj)
 

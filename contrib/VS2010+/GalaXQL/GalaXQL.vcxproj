@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\galaxql.cpp" />
+    <ClCompile Include="..\..\..\Preferences.cpp" />
     <ClCompile Include="..\..\..\RegenerationDialog.cpp" />
     <ClCompile Include="..\..\..\sqlite3.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -106,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\galaxql.h" />
+    <ClInclude Include="..\..\..\Preferences.h" />
     <ClInclude Include="..\..\..\RegenerationDialog.h" />
     <ClInclude Include="..\..\..\resource.h" />
     <ClInclude Include="..\..\..\sqlite3.h" />

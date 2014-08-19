@@ -27,6 +27,7 @@
 #include "wx/splitter.h"
 #include "wx/notebook.h"
 #include "wx/html/htmlwin.h"
+#include <wx/glcanvas.h>
 ////@end includes
 
 /*!
@@ -100,6 +101,8 @@ based on some template? I'm starting from 2xxxx to avoid conflict.
 */
 #define MENU_CONTEXT_COPY 20001
 #define MENU_CONTEXT_SELECT_ALL 20002
+#define MENU_RESET_PREFS 20003
+#define MENU_RESET_ALL 20004
 ////@end control identifiers
 
 /*!
@@ -155,6 +158,12 @@ public:
 
     /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_REGENERATE1KSPHERE
     void OnRegenerate1ksphereClick( wxCommandEvent& event );
+
+    /// wxEVT_COMMAND_BUTTON_CLICKED event handler for MENU_RESET_PREFS
+    void OnResetPrefsClick( wxCommandEvent& event );
+
+    /// wxEVT_COMMAND_BUTTON_CLICKED event handler for MENU_RESET_ALL
+    void OnResetAllClick( wxCommandEvent& event );
 
     /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_EXIT
     void OnQuitappClick( wxCommandEvent& event );

@@ -95,7 +95,10 @@
 ////@end includes
 
 #include "galaxql.h"
+#include "Preferences.h"
 #include "sqlqueryctrl.h"
+
+wxFileName g_appFileName;
 
 const int starcolors[]= // Hagen numbers
 {
@@ -177,6 +180,8 @@ GalaxqlApp::GalaxqlApp()
 
 bool GalaxqlApp::OnInit()
 { 
+    g_appFileName = wxStandardPaths::Get().GetExecutablePath();
+
 #if defined(__WXMAC__) || defined(__WXCOCOA__)
     // Change working directory to bundle's 'Resources'
 
@@ -199,8 +204,7 @@ bool GalaxqlApp::OnInit()
     // executable is in.  In the event that GalaXQL was launched from a different
     // directory, we must switch to the executable's directory or else GalaXQL
     // will crash when it cannot load a resource.
-    wxFileName executableFileName(wxStandardPaths::Get().GetExecutablePath());
-    wxSetWorkingDirectory(executableFileName.GetPath(wxPATH_GET_VOLUME));
+    wxSetWorkingDirectory(g_appFileName.GetPath(wxPATH_GET_VOLUME));
 #endif
 
     if (!wxFileExists(wxT("galaxql.dat")))
@@ -251,10 +255,14 @@ bool GalaxqlApp::OnInit()
         return false;
     }
 
+    CreatePrefsTableIfNotExists();
+
     Galaxql* mainWindow = new Galaxql( NULL, ID_FRAME );
 
     if (regen_needed)
         mainWindow->RegenerateWorld(1);
+
+    RestorePreferences();
 
     mainWindow->Center();
     mainWindow->Show(true);
@@ -292,6 +300,10 @@ BEGIN_EVENT_TABLE( Galaxql, wxFrame )
     EVT_MENU( ID_REGENERATE10K, Galaxql::OnRegenerate10kClick )
 
     EVT_MENU( ID_REGENERATE1KSPHERE, Galaxql::OnRegenerate1ksphereClick )
+
+    EVT_MENU( MENU_RESET_PREFS, Galaxql::OnResetPrefsClick )
+
+    EVT_MENU( MENU_RESET_ALL, Galaxql::OnResetAllClick )
 
     EVT_MENU( wxID_OPEN, Galaxql::OnLoadqueryClick )
 
@@ -430,9 +442,6 @@ bool Galaxql::Create( wxWindow* parent, wxWindowID id, const wxString& caption, 
     mChapterSelect->Append(wxT("19. Triggers"));
     mChapterSelect->Append(wxT("20. Indexes"));
     mChapterSelect->Append(wxT("That's all for now"));
-    mChapterSelect->Select(0);
-    wxCommandEvent e;
-    OnChapterselectSelected(e);
 
     mHtmlPanel->LoadPage(wxT("file:galaxql.dat#zip:index.htm"));
 
@@ -460,6 +469,9 @@ void Galaxql::CreateControls()
     itemMenu4->Append(ID_REGENERATE25K, _("Regenerate database (&25k)"), _T(""), wxITEM_NORMAL);
     itemMenu4->Append(ID_REGENERATE10K, _("Regenerate database (&10k)"), _T(""), wxITEM_NORMAL);
     itemMenu4->Append(ID_REGENERATE1KSPHERE, _("Regenerate database (1k &sphere)"), _T(""), wxITEM_NORMAL);
+    itemMenu4->AppendSeparator();
+    itemMenu4->Append(MENU_RESET_PREFS, wxT("Reset saved GUI && session &preferences"));
+    itemMenu4->Append(MENU_RESET_ALL, wxT("Reset &everything (Destroy database and restart)"));
     itemMenu3->Append(ID_RADOPER, _("&Radical operations"), itemMenu4);
     itemMenu3->AppendSeparator();
     itemMenu3->Append(wxID_SAVE, _("&Save query.."), _T(""), wxITEM_NORMAL);
@@ -1626,9 +1638,42 @@ void Galaxql::RegenerateWorld(int which)
     reg->Show(true);
 
     GalaxqlApp * app = (GalaxqlApp*)wxTheApp;
-    sqlite3_close(app->db);
-    remove("galaxql.db");
-    sqlite3_open("galaxql.db",&app->db);
+
+    int rc = sqlite3_exec(
+                app->db,
+                "PRAGMA writable_schema = 1;"
+                "DELETE FROM sqlite_master WHERE TYPE IN "
+                    "('table', 'index', 'trigger') AND NAME NOT IN ('prefs');"
+                "PRAGMA writable_schema = 0;"
+                "VACUUM;"
+                "PRAGMA INTEGRITY_CHECK;",
+                NULL,
+                NULL,
+                NULL);
+
+    if(rc != SQLITE_OK)
+    {
+        sqlite3_close(app->db);
+        app->db = NULL;
+        remove("galaxql.db");
+
+        if(wxFileExists(wxT("galaxql.db")))
+        {
+            wxMessageBox(
+                wxT("The database is corrupt and could not be deleted.\n")
+                    wxT("GalaXQL will exit. Please manually delete galaxql.db."),
+                wxT("Error"),
+                wxICON_ERROR | wxCENTER,
+                this);
+
+            wxTheApp->Exit();
+            return;
+        }
+
+        sqlite3_open("galaxql.db", &app->db);
+    }
+
+    CreatePrefsTableIfNotExists();
 
     sqlite3_exec(
                 app->db,
@@ -2045,6 +2090,65 @@ void Galaxql::OnRegenerate1ksphereClick( wxCommandEvent& WXUNUSED(event) )
     RegenerateWorld(3);
 }
 
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for MENU_RESET_PREFS
+ */
+
+void Galaxql::OnResetPrefsClick( wxCommandEvent& WXUNUSED(event) )
+{
+    ResetPreferences();
+}
+
+/* This function launches the GalaXQL application (ie this app). It is meant to
+be called on exit set via atexit() if necessary to restart the application.
+*/
+void app_start()
+{
+    wxExecute(g_appFileName.GetFullPath());
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for MENU_RESET_ALL
+ */
+
+void Galaxql::OnResetAllClick( wxCommandEvent& WXUNUSED(event) )
+{
+    GalaxqlApp *app = (GalaxqlApp *)wxTheApp;
+
+    wxMessageDialog dlg(
+        this,
+        wxT("Are you sure you want to reset everything?\n")
+            wxT("If yes galaxql.db will be deleted and GalaXQL will restart."),
+        wxT("Warning"),
+        wxYES_NO | wxICON_WARNING | wxCENTER);
+
+    if(dlg.ShowModal() != wxID_YES)
+    {
+        return;
+    }
+
+    sqlite3_close(app->db);
+    app->db = NULL;
+
+    remove("galaxql.db");
+
+    if(wxFileExists(wxT("galaxql.db")))
+    {
+        wxMessageBox(
+            wxT("The database could not be deleted.\n")
+                wxT("GalaXQL will exit. Please manually delete galaxql.db."),
+            wxT("Error"),
+            wxICON_ERROR | wxCENTER,
+            this);
+
+        wxTheApp->Exit();
+        return;
+    }
+
+    atexit(app_start);
+    wxTheApp->Exit();
+}
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_SQLSHRINK
@@ -3119,6 +3223,7 @@ void Galaxql::OnChapterselectSelected( wxCommandEvent& WXUNUSED(event) )
         sprintf(temp,"file:galaxql.dat#zip:guruend.htm",selection);
 
     mGuruSpeaks->LoadPage(wxString(temp,wxConvUTF8));
+    SetPreference("ChapterSelect", mChapterSelect->GetSelection());
 }
 
 
@@ -3147,6 +3252,7 @@ void Galaxql::OnMenuglowClick( wxCommandEvent& WXUNUSED(event) )
     mb->Check(ID_MENUGLOW,1);
     mb->Check(ID_MENULOWQUALITY,0);
     mb->Check(ID_NORMALRENDER,0);
+    SetPreference("RenderQuality", "Glow");
 }
 
 
@@ -3300,6 +3406,7 @@ void Galaxql::OnMenulowqualityClick( wxCommandEvent& WXUNUSED(event) )
     mb->Check(ID_MENUGLOW,0);
     mb->Check(ID_MENULOWQUALITY,1);
     mb->Check(ID_NORMALRENDER,0);
+    SetPreference("RenderQuality", "Low");
 }
 
 
@@ -3315,6 +3422,7 @@ void Galaxql::OnNormalrenderClick( wxCommandEvent& WXUNUSED(event) )
     mb->Check(ID_MENUGLOW,0);
     mb->Check(ID_MENULOWQUALITY,0);
     mb->Check(ID_NORMALRENDER,1);
+    SetPreference("RenderQuality", "Normal");
 }
 
 /*!
@@ -3326,4 +3434,5 @@ void Galaxql::OnRendergridClick( wxCommandEvent& WXUNUSED(event) )
     mGfxPanel->mRenderGrid = !mGfxPanel->mRenderGrid;
     wxMenuBar *mb = GetMenuBar();
     mb->Check(ID_RENDERGRID, mGfxPanel->mRenderGrid != 0);
+    SetPreference("RenderGrid", mGfxPanel->mRenderGrid);
 }

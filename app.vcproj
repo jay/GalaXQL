@@ -148,6 +148,9 @@
 				RelativePath=".\galaxql.cpp">
 			</File>
 			<File
+				RelativePath=".\Preferences.cpp">
+			</File>
+			<File
 				RelativePath=".\RegenerationDialog.cpp">
 			</File>
 			<File
@@ -163,6 +166,9 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath=".\galaxql.h">
+			</File>
+			<File
+				RelativePath=".\Preferences.h">
 			</File>
 			<File
 				RelativePath=".\RegenerationDialog.h">
