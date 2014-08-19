@@ -51,8 +51,11 @@
 #endif
 
 #if defined(_DEBUG) && defined(__WXMSW__)
+    #ifndef _CRTDBG_MAP_ALLOC
+        #define _CRTDBG_MAP_ALLOC
+    #endif
     #include "wx/msw/msvcrt.h"
-    #if !defined(_INC_CRTDBG) || !defined(_CRTDBG_MAP_ALLOC)
+    #ifndef _INC_CRTDBG
         #error Debug CRT functions have not been included!
     #endif
     #include <iostream>
