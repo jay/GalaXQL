@@ -270,14 +270,12 @@ void RestorePreferences()
 
     Guru Tab > Combobox
 
-    - [0, 20]
+    - [0, 20] (default 0)
     Refer to mChapterSelect creation in Galaxql::Create().
     */
     int chapter = GetPreference("ChapterSelect", 0);
 
-    g->mChapterSelect->Select(chapter);
-    wxCommandEvent e;
-    g->OnChapterselectSelected(e);
+    g->ResetGuruPanelToChapter(chapter);
 
     g = (Galaxql *)app->GetTopWindow();
 

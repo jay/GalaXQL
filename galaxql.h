@@ -241,6 +241,8 @@ public:
 
     void RegenerateWorld(int which);
 
+    void ResetGuruPanelToChapter(int chapter);
+
     float min_col(Query &q, int colno);
     float max_col(Query &q, int colno);
     int sorted_col(Query &q, int colno);

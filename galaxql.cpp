@@ -417,8 +417,6 @@ bool Galaxql::Create( wxWindow* parent, wxWindowID id, const wxString& caption, 
     f = fs->OpenFile(wxT("file:galaxql.dat#zip:easter.png"));
     mGuruEaster.LoadFile(*f->GetStream(), wxBITMAP_TYPE_PNG);
     delete f;
-        
-    mGuruPicture->SetBitmap(mGuruNormal);
     delete fs;
 
     mChapterSelect->Append(wxT("1. Welcome.."));
@@ -2216,6 +2214,17 @@ void Galaxql::OnMaxplanetsClick( wxCommandEvent& WXUNUSED(event) )
         wxT("    GROUP BY starid)\n"));
 }
 
+void Galaxql::ResetGuruPanelToChapter(int chapter)
+{
+    mGuruDone->Enable(1);
+    mGuruDone->SetLabel(wxT("Ok, I'm done.."));
+    mGuruPicture->SetBitmap(mGuruNormal);
+    mChapterSelect->Enable(1);
+    mChapterSelect->SetSelection(chapter);
+    wxCommandEvent e;
+    OnChapterselectSelected(e);
+}
+
 float Galaxql::min_col(Query &q, int colno)
 {
     double val;
@@ -3114,10 +3123,7 @@ void Galaxql::OnGuruDoneClick( wxCommandEvent& event )
     }
     else
     {
-        mGuruPicture->SetBitmap(mGuruNormal);
-        mChapterSelect->Enable(1);
-        mGuruDone->SetLabel(wxT("Ok, I'm done.."));
-        OnChapterselectSelected(event);
+        ResetGuruPanelToChapter(mChapterSelect->GetSelection());
     }
 }
 
