@@ -4,6 +4,7 @@
 	Version="7.10"
 	Name="app"
 	ProjectGUID="{000DE939-B713-41B4-B51D-B391B1EEC65D}"
+	RootNamespace="app"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -15,28 +16,30 @@
 			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="1"
-			CharacterSet="2">
+			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\wxWidgets-2.6.3\include,C:\wxWidgets-2.6.3\lib\vc_lib\msw"
-				PreprocessorDefinitions="_UNICODE;WIN32;_DEBUG;_WINDOWS;__WXMSW__;SQLITE_DEFAULT_CACHE_SIZE=8000;SQLITE_DEFAULT_TEMP_CACHE_SIZE=2000;TEMP_STORE=3"
+				AdditionalIncludeDirectories="C:\wxWidgets\include,C:\wxWidgets\lib\vc_lib\mswud"
+				PreprocessorDefinitions="SQLITE_DEFAULT_CACHE_SIZE=8000;SQLITE_DEFAULT_TEMP_CACHE_SIZE=2000;TEMP_STORE=3;WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
+				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="4"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wxmsw26d_core.lib wxmsw26d_html.lib wxbase26d.lib wxmsw26d_gl.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexd.lib wxexpatd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib oleacc.lib odbc32.lib opengl32.lib glu32.lib"
+				AdditionalDependencies="wxmsw31ud_core.lib wxmsw31ud_stc.lib wxmsw31ud_html.lib wxbase31ud.lib wxmsw31ud_gl.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexud.lib wxexpatd.lib comctl32.lib rpcrt4.lib"
 				ShowProgress="0"
 				OutputFile="$(OutDir)/app.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\wxWidgets-2.6.3\lib,C:\wxWidgets-2.6.3\lib\vc_lib"
+				AdditionalLibraryDirectories="C:\wxWidgets\lib\vc_lib"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/app.pdb"
 				SubSystem="2"
@@ -44,7 +47,9 @@
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				Description="Creating GalaXQL.dat"
+				CommandLine="zip -9 -X -r -j -q &quot;$(TargetDir)GalaXQL.dat&quot; data"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -67,7 +72,7 @@
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="1"
 			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
@@ -79,28 +84,29 @@
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="FALSE"
 				OptimizeForWindowsApplication="TRUE"
-				AdditionalIncludeDirectories="C:\wxWidgets-2.6.3\include,C:\wxWidgets-2.6.3\lib\vc_lib\msw"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;SQLITE_DEFAULT_CACHE_SIZE=8000;SQLITE_DEFAULT_TEMP_CACHE_SIZE=2000;TEMP_STORE=3"
+				AdditionalIncludeDirectories="C:\wxWidgets\include,C:\wxWidgets\lib\vc_lib\mswu"
+				PreprocessorDefinitions="SQLITE_DEFAULT_CACHE_SIZE=8000;SQLITE_DEFAULT_TEMP_CACHE_SIZE=2000;TEMP_STORE=3;WIN32;_WINDOWS;NDEBUG"
 				StringPooling="TRUE"
 				ExceptionHandling="TRUE"
 				RuntimeLibrary="2"
 				StructMemberAlignment="4"
 				BufferSecurityCheck="FALSE"
 				EnableEnhancedInstructionSet="0"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
+				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="3"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wxmsw26_core.lib wxbase26.lib wxmsw26_gl.lib wxmsw26_html.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregex.lib wxexpat.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib oleacc.lib odbc32.lib"
+				AdditionalDependencies="wxmsw31u_core.lib wxmsw31u_stc.lib wxmsw31u_html.lib wxbase31u.lib wxmsw31u_gl.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregexu.lib wxexpat.lib comctl32.lib rpcrt4.lib"
 				OutputFile="$(OutDir)/app.exe"
 				Version="0.9"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="C:\wxWidgets-2.6.3\lib,C:\wxWidgets-2.6.3\lib\vc_lib"
-				IgnoreDefaultLibraryNames="libc.lib"
+				AdditionalLibraryDirectories="C:\wxWidgets\lib\vc_lib"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -110,7 +116,9 @@
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				Description="Creating GalaXQL.dat"
+				CommandLine="zip -9 -X -r -j -q &quot;$(TargetDir)GalaXQL.dat&quot; data"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -142,166 +150,12 @@
 			<File
 				RelativePath=".\RegenerationDialog.cpp">
 			</File>
-			<Filter
-				Name="sqlite"
-				Filter="">
-				<File
-					RelativePath=".\sqlite\alter.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\analyze.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\attach.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\auth.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\btree.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\btree.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\build.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\callback.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\complete.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\date.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\delete.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\expr.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\func.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\hash.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\hash.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\insert.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\keywordhash.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\legacy.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\main.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\opcodes.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\opcodes.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\os.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\os.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\os_common.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\os_win.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\os_win.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\pager.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\pager.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\parse.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\parse.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\pragma.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\prepare.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\printf.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\random.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\select.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\shell.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\sqliteInt.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\table.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\tokenize.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\trigger.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\update.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\utf.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\util.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\vacuum.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\vdbe.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\vdbe.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\vdbeapi.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\vdbeaux.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\vdbefifo.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\vdbeInt.h">
-				</File>
-				<File
-					RelativePath=".\sqlite\vdbemem.c">
-				</File>
-				<File
-					RelativePath=".\sqlite\where.c">
-				</File>
-			</Filter>
+			<File
+				RelativePath=".\sqlite3.c">
+			</File>
+			<File
+				RelativePath=".\sqlqueryctrl.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -317,7 +171,10 @@
 				RelativePath=".\resource.h">
 			</File>
 			<File
-				RelativePath=".\sqlite\sqlite3.h">
+				RelativePath=".\sqlite3.h">
+			</File>
+			<File
+				RelativePath=".\sqlqueryctrl.h">
 			</File>
 		</Filter>
 		<Filter
@@ -330,10 +187,22 @@
 			<File
 				RelativePath=".\galaxql.ico">
 			</File>
-			<File
-				RelativePath=".\icon1.ico">
-			</File>
 		</Filter>
+		<File
+			RelativePath=".\README_WIN.txt">
+			<FileConfiguration
+				Name="Debug|Win32"
+				ExcludedFromBuild="TRUE">
+				<Tool
+					Name="VCCustomBuildTool"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				ExcludedFromBuild="TRUE">
+				<Tool
+					Name="VCCustomBuildTool"/>
+			</FileConfiguration>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
