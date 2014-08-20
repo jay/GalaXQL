@@ -3226,7 +3226,7 @@ void Galaxql::OnChapterselectSelected( wxCommandEvent& WXUNUSED(event) )
     if (selection < 21)
         sprintf(temp,"file:galaxql.dat#zip:guru%02d.htm",selection);
     else
-        sprintf(temp,"file:galaxql.dat#zip:guruend.htm",selection);
+        sprintf(temp,"file:galaxql.dat#zip:guruend.htm");
 
     mGuruSpeaks->LoadPage(wxString(temp,wxConvUTF8));
     SetPreference("ChapterSelect", mChapterSelect->GetSelection());
