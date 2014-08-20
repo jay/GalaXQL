@@ -20,7 +20,7 @@ EXECUTABLE_EXTENSION=.exe
 
 else
 
-PLATFORM_LDFLAGS = -lGLU
+PLATFORM_LDFLAGS = -lGLU -lGL -ldl
 
 endif
 
