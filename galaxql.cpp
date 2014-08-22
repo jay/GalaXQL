@@ -60,6 +60,12 @@
     #include <iostream>
 #endif
 
+#ifdef _WIN32
+#include <process.h>
+#else
+#include <unistd.h>
+#endif
+
 #include <wx/clipbrd.h>
 
 #if defined(__GNUG__) && !defined(__APPLE__)
@@ -2103,7 +2109,11 @@ be called on exit set via atexit() if necessary to restart the application.
 */
 void app_start()
 {
-    wxExecute(g_appFileName.GetFullPath());
+#ifdef _WIN32
+    _execl(g_appFileName.GetFullPath(), g_appFileName.GetFullPath(), NULL);
+#else
+    execl(g_appFileName.GetFullPath(), g_appFileName.GetFullPath(), NULL);
+#endif
 }
 
 /*!
