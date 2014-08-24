@@ -103,6 +103,7 @@ based on some template? I'm starting from 2xxxx to avoid conflict.
 #define MENU_CONTEXT_SELECT_ALL 20002
 #define MENU_RESET_PREFS 20003
 #define MENU_RESET_ALL 20004
+#define MENU_TOGGLE_GURU_PIC 20005
 ////@end control identifiers
 
 /*!
@@ -206,6 +207,9 @@ public:
 
     /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_RENDERGRID
     void OnRendergridClick( wxCommandEvent& event );
+
+    /// wxEVT_COMMAND_MENU_SELECTED event handler for MENU_TOGGLE_GURU_PIC
+    void OnShowProfessorClick( wxCommandEvent& event );
 
     /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
     void OnAboutClick( wxCommandEvent& event );

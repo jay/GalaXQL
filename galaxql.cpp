@@ -343,6 +343,8 @@ BEGIN_EVENT_TABLE( Galaxql, wxFrame )
 
     EVT_MENU( ID_RENDERGRID, Galaxql::OnRendergridClick )
 
+    EVT_MENU( MENU_TOGGLE_GURU_PIC, Galaxql::OnShowProfessorClick )
+
     EVT_MENU( wxID_ABOUT, Galaxql::OnAboutClick )
 
     EVT_BUTTON( wxID_OPEN, Galaxql::OnLoadqueryClick )
@@ -474,7 +476,7 @@ void Galaxql::CreateControls()
     itemMenu4->Append(ID_REGENERATE10K, _("Regenerate database (&10k)"), _T(""), wxITEM_NORMAL);
     itemMenu4->Append(ID_REGENERATE1KSPHERE, _("Regenerate database (1k &sphere)"), _T(""), wxITEM_NORMAL);
     itemMenu4->AppendSeparator();
-    itemMenu4->Append(MENU_RESET_PREFS, wxT("Reset saved GUI && session &preferences"));
+    itemMenu4->Append(MENU_RESET_PREFS, wxT("Reset saved appearance && session &preferences"));
     itemMenu4->Append(MENU_RESET_ALL, wxT("Reset &everything (Destroy database and restart)"));
     itemMenu3->Append(ID_RADOPER, _("&Radical operations"), itemMenu4);
     itemMenu3->AppendSeparator();
@@ -502,13 +504,16 @@ void Galaxql::CreateControls()
     itemMenu13->Append(ID_MENURUNQUERY, _("&Run query\tF5"), _T(""), wxITEM_NORMAL);
     menuBar->Append(itemMenu13, _("&SQL"));
     wxMenu* itemMenu27 = new wxMenu;
-    itemMenu27->Append(ID_MENUGLOW, _("Render with &Glow"), _T(""), wxITEM_RADIO);
-    itemMenu27->Append(ID_NORMALRENDER, _("Render &Normally"), _T(""), wxITEM_RADIO);
+    itemMenu27->Append(ID_MENUGLOW, _("Galaxy: &Glow (More CPU)"), _T(""), wxITEM_RADIO);
+    itemMenu27->Append(ID_NORMALRENDER, _("Galaxy: &Normal"), _T(""), wxITEM_RADIO);
     itemMenu27->Check(ID_NORMALRENDER, true);
-    itemMenu27->Append(ID_MENULOWQUALITY, _("Render in &Low-quality mode"), _T(""), wxITEM_RADIO);
+    itemMenu27->Append(ID_MENULOWQUALITY, _("Galaxy: &Low-quality (Less CPU)"), _T(""), wxITEM_RADIO);
     itemMenu27->AppendSeparator();
-    itemMenu27->Append(ID_RENDERGRID, _("&Draw Grid"), _T(""), wxITEM_CHECK);
-    menuBar->Append(itemMenu27, _("&Graphics"));
+    itemMenu27->Append(ID_RENDERGRID, _("Galaxy: &Draw grid"), _T(""), wxITEM_CHECK);
+    itemMenu27->AppendSeparator();
+    itemMenu27->Append(MENU_TOGGLE_GURU_PIC, wxT("Show &Professor's picture"), wxT(""), wxITEM_CHECK);
+    itemMenu27->Check(MENU_TOGGLE_GURU_PIC, true);
+    menuBar->Append(itemMenu27, _("&Appearance"));
     wxMenu* itemMenu33 = new wxMenu;
     itemMenu33->Append(wxID_ABOUT, _("&About.."), _T(""), wxITEM_NORMAL);
     menuBar->Append(itemMenu33, _("&Help"));
@@ -3451,4 +3456,21 @@ void Galaxql::OnRendergridClick( wxCommandEvent& WXUNUSED(event) )
     wxMenuBar *mb = GetMenuBar();
     mb->Check(ID_RENDERGRID, mGfxPanel->mRenderGrid != 0);
     SetPreference("RenderGrid", mGfxPanel->mRenderGrid);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for MENU_TOGGLE_GURU_PIC
+ */
+
+void Galaxql::OnShowProfessorClick( wxCommandEvent& WXUNUSED(event) )
+{
+    bool show = GetMenuBar()->IsChecked(MENU_TOGGLE_GURU_PIC);
+
+    if(mGuruPicture->IsShown() != show)
+    {
+        mGuruPicture->Show(show);
+        mGuruPicture->GetParent()->Layout();
+    }
+
+    SetPreference("ShowProfessor", show);
 }

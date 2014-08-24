@@ -208,13 +208,13 @@ void RestorePreferences()
     /** RenderQuality {text value}
 
     - "Glow"
-    Menu > Graphics > Render with Glow
+    Menu > Appearance > Galaxy: Glow (More CPU)
 
     - "Normal" (default)
-    Menu > Graphics > Render Normally
+    Menu > Appearance > Galaxy: Normal
 
     - "Low"
-    Menu > Graphics > Render in Low-quality mode
+    Menu > Appearance > Galaxy: Low-quality (Less CPU)
     */
     wxString quality = GetPreference("RenderQuality", "Normal");
 
@@ -243,7 +243,7 @@ void RestorePreferences()
 
     /** RenderGrid {int value}
 
-    Menu > Graphics > Draw Grid
+    Menu > Appearance > Galaxy: Draw Grid
 
     - 0 (Default)
     Disabled
@@ -257,6 +257,32 @@ void RestorePreferences()
     {
         wxCommandEvent e;
         g->OnRendergridClick(e);
+    }
+
+    g = (Galaxql *)app->GetTopWindow();
+
+    if(!g)
+    {
+        return;
+    }
+
+    /** ShowProfessor {int value}
+
+    Menu > Appearance > Show &Professor's picture
+
+    - 0
+    Hide
+
+    - 1 (Default)
+    Show
+    */
+    bool professor = !!GetPreference("ShowProfessor", 1);
+
+    if(professor != g->GetMenuBar()->IsChecked(MENU_TOGGLE_GURU_PIC))
+    {
+        g->GetMenuBar()->Check(MENU_TOGGLE_GURU_PIC, professor);
+        wxCommandEvent e;
+        g->OnShowProfessorClick(e);
     }
 
     g = (Galaxql *)app->GetTopWindow();
