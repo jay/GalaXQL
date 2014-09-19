@@ -67,6 +67,10 @@
 #endif
 
 #include <wx/clipbrd.h>
+#include <wx/font.h>
+#include <wx/fontdata.h>
+#include <wx/fontdlg.h>
+#include <wx/richmsgdlg.h>
 
 #if defined(__GNUG__) && !defined(__APPLE__)
 #pragma implementation "galaxql.h"
@@ -345,6 +349,8 @@ BEGIN_EVENT_TABLE( Galaxql, wxFrame )
 
     EVT_MENU( MENU_TOGGLE_GURU_PIC, Galaxql::OnShowProfessorClick )
 
+    EVT_MENU( MENU_CHANGE_LESSON_FONT, Galaxql::OnChangeLessonFontClick )
+
     EVT_MENU( wxID_ABOUT, Galaxql::OnAboutClick )
 
     EVT_BUTTON( wxID_OPEN, Galaxql::OnLoadqueryClick )
@@ -392,6 +398,7 @@ bool Galaxql::Create( wxWindow* parent, wxWindowID id, const wxString& caption, 
     mGuruPicture = NULL;
     mChapterSelect = NULL;
     mGuruSpeaks = NULL;
+    mLessonFontData = NULL;
     mGuruDone = NULL;
     mQueryResult = NULL;
     mHtmlPanel = NULL;
@@ -512,6 +519,7 @@ void Galaxql::CreateControls()
     itemMenu27->Append(ID_RENDERGRID, _("Galaxy: &Draw grid"), _T(""), wxITEM_CHECK);
     itemMenu27->AppendSeparator();
     itemMenu27->Append(MENU_TOGGLE_GURU_PIC, wxT("Show &Professor's picture"), wxT(""), wxITEM_CHECK);
+    itemMenu27->Append(MENU_CHANGE_LESSON_FONT, wxT("Change lesson &font"));
     itemMenu27->Check(MENU_TOGGLE_GURU_PIC, true);
     menuBar->Append(itemMenu27, _("&Appearance"));
     wxMenu* itemMenu33 = new wxMenu;
@@ -599,6 +607,10 @@ void Galaxql::CreateControls()
     mNotebook->AddPage(mHtmlPanel, _("Reference"));
 
     itemSplitterWindow35->SplitVertically(itemSplitterWindow36, mNotebook, 500);
+
+    mLessonFontData = new wxFontData();
+    mLessonFontData->EnableEffects(false);
+    mLessonFontData->SetAllowSymbols(false);
 
 ////@end Galaxql content construction
 
@@ -3473,4 +3485,141 @@ void Galaxql::OnShowProfessorClick( wxCommandEvent& WXUNUSED(event) )
     }
 
     SetPreference("ShowProfessor", show);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for MENU_CHANGE_LESSON_FONT
+ */
+
+void Galaxql::OnChangeLessonFontClick( wxCommandEvent& WXUNUSED(event) )
+{
+    if(GetPreference("ShowFontWarning", 1))
+    {
+        /* In order for this message dialog to appear similar on all platforms
+        it's necessary to prewrap the text at a low number. On Windows <= XP and
+        platforms other than Windows, wxRichMessageDialog uses
+        wxGenericRichMessageDialog which does not wrap text and has no default
+        taskbar or dialog icon.
+        http://trac.wxwidgets.org/ticket/16528
+        */
+        wxRichMessageDialog warn(wxTheApp->GetTopWindow(),
+            "There is a limited ability to change the lesson\n"
+            "font. Font style (italic, bold, etc) is ignored\n"
+            "for most fonts. If you need an ultrabold font for\n"
+            "accessibility, Arial in style Black may work.\n"
+            "\n"
+            "The font picker will show the currently selected\n"
+            "font unless you have chosen an unsupported style.",
+            "GalaXQL font picker info",
+            wxOK | wxCENTRE | wxICON_INFORMATION);
+        warn.ShowCheckBox("Don't show this notice again");
+        warn.ShowModal();
+        if(warn.IsCheckBoxChecked())
+        {
+            SetPreference("ShowFontWarning", 0);
+        }
+    }
+
+    wxFontDialog dialog(this, *mLessonFontData);
+    dialog.SetTitle("Change lesson font");
+    if(dialog.ShowModal() !=  wxID_OK)
+    {
+        return;
+    }
+
+    /* Even though style information is not supported we don't filter the user
+    selected font to a regular style when setting in the font picker. This way
+    the next time the user opens the font picker in this session they'll see
+    what they last selected even if it wasn't supported.
+    */
+    mLessonFontData->SetInitialFont(dialog.GetFontData().GetChosenFont());
+
+    /* We can only set a font's face name and point size in a wxHtmlWindow, no
+    styles. The only proper way to set styles would be by modifying the HTML.
+    Therefore we're using the base font which is the user selected font with
+    regular style. However some base font face names include style information,
+    therefore some fonts like that of face name 'Arial Black' for example will
+    technically show even though they're unsupported.
+    */
+    const wxFont &font = dialog.GetFontData().GetChosenFont().GetBaseFont();
+    SetLessonFonts(font.GetPointSize(), font.GetFaceName());
+
+#ifdef _DEBUG
+    wxMessageBox(mGuruSpeaks->GetParser()->GetFontFace());
+#endif
+
+    SetPreference("LessonFont", font.GetFaceName()
+        + ":" + wxString::Format(wxT("%i"),font.GetPointSize()));
+}
+
+void Galaxql::SetLessonFonts(int size, wxString normal_face, wxString fixed_face)
+{
+    if(size <= 0)
+    {
+        size = wxNORMAL_FONT->GetPointSize();
+    }
+
+    /* The standard HTML font size we use in the lessons is typically -1.
+    We have to adjust the sizes table that maps HTML font sizes to font point
+    sizes for wxHtmlWindow so that HTML font size -1 corresponds to the user
+    selected point size; otherwise the selected font would appear smaller.
+    */
+    int sizes[7]; // point sizes for HTML font sizes -2,-1,(default),+1,+2,+3,+4
+
+    /* HTML font size -1 would normally be 83% of the default point size and the
+    default point size is never < 10. Therefore HTML font size -1 shouldn't have
+    a point size less than 8: int(10 * 0.83).
+    */
+    if(size < 8)
+    {
+        size = 8;
+    }
+    sizes[1] = size;   // HTML font size -1
+
+    sizes[2] = int(size * 1.20);   // HTML font size attribute omitted (default)
+
+    // For the default size wxGetDefaultHTMLFontSize() returns 10 if < 10
+    if(sizes[2] < 10)
+    {
+        sizes[2] = 10;
+    }
+
+    // For the smallest size wxBuildFontSizes() reduces to %75
+    sizes[0] = int(sizes[2] * 0.75);   // -2
+
+    // For other sizes wxBuildFontSizes() uses a fixed factor of 1.2 from CSS2
+    sizes[3] = int(sizes[2] * 1.20);   // +1
+    sizes[4] = int(sizes[2] * 1.44);   // +2
+    sizes[5] = int(sizes[2] * 1.73);   // +3
+    sizes[6] = int(sizes[2] * 2.07);   // +4
+
+    /* As noted in this function's declaration, handling of empty normal_face
+    and fixed_face for HTML windows is left to wxHtmlWindow::SetFonts().
+    */
+    mQueryResult->SetFonts(normal_face, fixed_face, sizes);
+    mQueryResult->Refresh();
+
+    mHtmlPanel->SetFonts(normal_face, fixed_face, sizes);
+    mHtmlPanel->Refresh();
+
+    mGuruSpeaks->SetFonts(normal_face, fixed_face, sizes);
+    mGuruSpeaks->Refresh();
+
+    if(normal_face.IsEmpty())
+    {
+        normal_face = wxNORMAL_FONT->GetFaceName();
+    }
+
+    // There are 256 lexer styles that can be set, numbered 0 to STYLE_MAX (255)
+    // http://www.scintilla.org/ScintillaDoc.html#StyleDefinition
+    for(int i = 0; i <= wxSTC_STYLE_MAX; ++i)
+    {
+        mQuery->StyleSetSize(i, size);
+
+        if(!normal_face.IsEmpty())
+        {
+            mQuery->StyleSetFaceName(i, normal_face);
+        }
+    }
+    mQuery->Refresh();
 }

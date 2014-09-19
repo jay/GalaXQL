@@ -23,6 +23,7 @@
  */
 
 ////@begin includes
+#include <wx/fontdata.h>
 #include "wx/frame.h"
 #include "wx/splitter.h"
 #include "wx/notebook.h"
@@ -104,6 +105,7 @@ based on some template? I'm starting from 2xxxx to avoid conflict.
 #define MENU_RESET_PREFS 20003
 #define MENU_RESET_ALL 20004
 #define MENU_TOGGLE_GURU_PIC 20005
+#define MENU_CHANGE_LESSON_FONT 20006
 ////@end control identifiers
 
 /*!
@@ -211,6 +213,9 @@ public:
     /// wxEVT_COMMAND_MENU_SELECTED event handler for MENU_TOGGLE_GURU_PIC
     void OnShowProfessorClick( wxCommandEvent& event );
 
+    /// wxEVT_COMMAND_MENU_SELECTED event handler for MENU_CHANGE_LESSON_FONT
+    void OnChangeLessonFontClick( wxCommandEvent& event );
+
     /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
     void OnAboutClick( wxCommandEvent& event );
 
@@ -247,6 +252,21 @@ public:
 
     void ResetGuruPanelToChapter(int chapter);
 
+    /* This function changes the fonts used by mQueryResult, mHtmlPanel,
+    mGuruSpeaks and mQuery.
+
+    @size: The user selected font point size.
+    @normal_face: The user selected normal font face name.
+    @fixed_face: The user selected fixed font face name.
+
+    All parameters can be empty. If the point size <= 0 the platform default
+    is used from wxNORMAL_FONT. Handling of an empty normal_face and/or
+    fixed_face is wxWidgets implementation dependent, but currently (3.1.0)
+    that means if a face name is empty the platform default is used.
+    */
+    void SetLessonFonts(int size = 0, wxString normal_face = wxEmptyString,
+        wxString fixed_face = wxEmptyString);
+
     float min_col(Query &q, int colno);
     float max_col(Query &q, int colno);
     int sorted_col(Query &q, int colno);
@@ -267,6 +287,7 @@ public:
     wxStaticBitmap* mGuruPicture;
     wxChoice* mChapterSelect;
     wxGuruSpeaksPanel* mGuruSpeaks;
+    wxFontData* mLessonFontData;
     wxButton* mGuruDone;
     wxHtmlWindow* mQueryResult;
     wxHtmlWindow* mHtmlPanel;

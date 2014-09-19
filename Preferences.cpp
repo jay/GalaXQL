@@ -59,6 +59,9 @@
     #include <iostream>
 #endif
 
+#include <wx/font.h>
+#include <wx/tokenzr.h>
+
 #include "Preferences.h"
 #include "galaxql.h"
 #include "sqlite3.h"
@@ -302,6 +305,53 @@ void RestorePreferences()
     int chapter = GetPreference("ChapterSelect", 0);
 
     g->ResetGuruPanelToChapter(chapter);
+
+    g = (Galaxql *)app->GetTopWindow();
+
+    if(!g)
+    {
+        return;
+    }
+
+    /** LessonFont {text value}
+
+    LessonFont is two font attribute tokens separated by a colon.
+    <Normal Font Face Name>:<Normal Font Point Size>
+
+    For example:
+    Arial:12
+
+    If either token is empty both the face and point size are based on the
+    platform's default font.
+    */
+    wxStringTokenizer tokenizer(GetPreference("LessonFont", ""), ":");
+
+    wxString face = tokenizer.GetNextToken();
+    int size = wxAtoi(tokenizer.GetNextToken());
+
+    if(face.IsEmpty() || (size <= 1))
+    {
+        face = wxNORMAL_FONT->GetBaseFont().GetFaceName();
+        size = wxNORMAL_FONT->GetBaseFont().GetPointSize();
+        /* The standard HTML font size we use in the lessons is typically -1,
+        which corresponds in points to 83% of the normal point size according to
+        wxBuildFontSizes(). Also wxGetDefaultHTMLFontSize() makes the normal
+        point size 10 if it's less than that. Which makes the minimum allowable
+        point size 8: int(10 * 0.83).
+        Both functions can be found in wxWidgets src/html/winpars.cpp.
+        */
+        size = int((size < 10 ? 10 : size) * 0.83);
+    }
+
+    g->SetLessonFonts(size, face);
+
+    /* Sometimes face names contain style information, eg 'Arial Black'. The
+    font picker usually cannot discern which font it should show in the picker
+    when the face name contains style information. Therefore those names are
+    unsupported. In such a scenario the font picker may not appear set to any
+    font even though the face name is valid and is the lesson font.
+    */
+    g->mLessonFontData->SetInitialFont(wxFontInfo(size).FaceName(face));
 
     g = (Galaxql *)app->GetTopWindow();
 
