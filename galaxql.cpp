@@ -2146,7 +2146,7 @@ void Galaxql::OnResetAllClick( wxCommandEvent& WXUNUSED(event) )
         wxT("Are you sure you want to reset everything?\n")
             wxT("If yes galaxql.db will be deleted and GalaXQL will restart."),
         wxT("Warning"),
-        wxYES_NO | wxICON_WARNING | wxCENTER);
+        wxYES_NO | wxNO_DEFAULT | wxICON_WARNING | wxCENTER);
 
     if(dlg.ShowModal() != wxID_YES)
     {
