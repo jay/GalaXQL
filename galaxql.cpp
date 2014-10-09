@@ -1575,7 +1575,7 @@ void Galaxql::OnRunqueryClick( wxCommandEvent& WXUNUSED(event) )
             // so compiling one row of html in a temporary string is
             // MUCH faster than adding to the master string all the time.
             wxString s,s2;
-            s+=wxT("<html><body bgcolor=#c0c0c0><table border=0 cellpadding=0 cellspacing=2>");
+            s+=wxT("<html><body bgcolor=#c0c0c0><table border=0 cellspacing=2>");
             int i;
             for (i = 0; i < mUserQuery.mRows; i++)
             {
