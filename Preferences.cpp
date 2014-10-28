@@ -187,6 +187,45 @@ void SetPreference(const wxString &name, const int value)
 }
 
 
+void DeletePreference(const wxString &name)
+{
+    GalaxqlApp *app = (GalaxqlApp *)wxTheApp;
+
+    if(!app || !name)
+    {
+        return;
+    }
+
+    sqlite3_stmt *stmt = NULL;
+
+    int rc = sqlite3_prepare_v2(app->db,
+        "DELETE FROM prefs WHERE name = ?", -1, &stmt, NULL);
+
+    if(rc != SQLITE_OK)
+    {
+        return;
+    }
+
+    rc = sqlite3_bind_text(stmt, 1, name.utf8_str(), -1, SQLITE_TRANSIENT);
+
+    if(rc != SQLITE_OK)
+    {
+        sqlite3_finalize(stmt);
+        return;
+    }
+
+    rc = sqlite3_step(stmt);
+
+    if(rc != SQLITE_DONE)
+    {
+        sqlite3_finalize(stmt);
+        return;
+    }
+
+    sqlite3_finalize(stmt);
+}
+
+
 /* Note if you are adding preferences to be restored:
 Follow the pattern below and after applying each preference get the top window
 again to make sure it's still good and return if it's not. This is in case the

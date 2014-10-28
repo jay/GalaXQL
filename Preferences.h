@@ -19,6 +19,10 @@ int GetPreference(const wxString &name, const int default_value);
 void SetPreference(const wxString &name, const wxString &value);
 void SetPreference(const wxString &name, const int value);
 
+/* Delete a preference.
+*/
+void DeletePreference(const wxString &name);
+
 /* Read all preferences and apply them to the application.
 If a preference does not exist use its default value.
 */
